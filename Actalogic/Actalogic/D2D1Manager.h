@@ -24,8 +24,13 @@ public:
 	// 描画終了
 	HRESULT EndDraw();
 
+	// デスクトップのDPIを取得
+	void GetDesktopDpi(FLOAT *dpiX, FLOAT *dpiY);
+
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	ID2D1HwndRenderTarget* m_pRenderTarget;
+
+	D2D1_COLOR_F m_backgroundColor;
 };
 

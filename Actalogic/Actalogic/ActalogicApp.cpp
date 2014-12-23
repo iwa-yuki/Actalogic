@@ -27,12 +27,12 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 	}
 
 	m_hInstance = hInstance;
-	m_hWnd = InitializeWindow(hInstance, nCmdShow, 640, 480);
+	m_hWnd = InitializeWindow(hInstance, nCmdShow, 640.0F, 480.0F);
 
 	return m_hWnd==NULL ? E_FAIL : S_OK;
 }
 
-HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG width, LONG height)
+HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, FLOAT width, FLOAT height)
 {
 	WNDCLASSEX wcex;
 
@@ -59,12 +59,17 @@ HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG widt
 		return NULL;
 	}
 
+	FLOAT dpiX, dpiY;
+	m_d2d1Manager.GetDesktopDpi(&dpiX, &dpiY);
+	UINT desktopWidth = static_cast<UINT>(ceil(width * dpiX / 96.f));
+	UINT desktopHeight = static_cast<UINT>(ceil(height * dpiY / 96.f));
+
 	HWND hWnd = CreateWindow(
 		m_szWindowClass,
 		m_szTitle,
 		WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		width, height,
+		desktopWidth, desktopHeight,
 		NULL,
 		NULL,
 		hInstance,
@@ -81,7 +86,7 @@ HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG widt
 		return NULL;
 	}
 
-	SetClientSize(hWnd, width, height);
+	SetClientSize(hWnd, desktopWidth, desktopHeight);
 
 	if (nCmdShow == SW_MAXIMIZE)
 	{
@@ -114,7 +119,6 @@ int ActalogicApp::Run()
 		else
 		{
 			OnTick();
-			Sleep(1);
 		}
 	}
 }
@@ -138,7 +142,7 @@ void ActalogicApp::OnRender()
 {
 	HRESULT hresult = S_OK;
 
-	hresult = m_d2d1Manager.CreateDeviceResources();
+	hresult = m_d2d1Manager.CreateDeviceResources(m_hWnd);
 	if (SUCCEEDED(hresult))
 	{
 		m_d2d1Manager.BeginDraw();

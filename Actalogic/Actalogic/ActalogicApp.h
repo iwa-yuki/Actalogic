@@ -16,7 +16,7 @@ public:
 
 private:
 	// ウィンドウを初期化する
-	HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG width, LONG height);
+	HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow, FLOAT width, FLOAT height);
 
 	// ゲームループ毎に呼ばれる
 	void OnTick();
