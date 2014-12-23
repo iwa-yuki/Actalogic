@@ -7,7 +7,25 @@ public:
 	D2D1Manager();
 	~D2D1Manager();
 
-	// Direct2Dを使うための準備を行う
-	HRESULT Initialize();
+	// デバイス非依存のリソースを作成する
+	// (開放はこのインスタンスが破棄されるとき自動で行われる)
+	HRESULT CreateDeviceIndependentResources();
+
+	// デバイス依存のリソースを作成する
+	HRESULT CreateDeviceResources(HWND hWnd);
+
+	// デバイス非依存のリソースを開放する
+	void DiscardDeviceResources();
+
+public:
+	// 描画開始
+	void BeginDraw();
+
+	// 描画終了
+	HRESULT EndDraw();
+
+private:
+	ID2D1Factory* m_pDirect2dFactory;
+	ID2D1HwndRenderTarget* m_pRenderTarget;
 };
 

@@ -6,7 +6,8 @@ TCHAR ActalogicApp::m_szTitle[] = _T("Actalogic");
 
 ActalogicApp::ActalogicApp():
 m_hWnd(NULL),
-m_hInstance(NULL)
+m_hInstance(NULL),
+m_d2d1Manager()
 {
 }
 
@@ -19,7 +20,7 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 {
 	HRESULT hresult;
 
-	hresult = m_d2d1Manager.Initialize();
+	hresult = m_d2d1Manager.CreateDeviceIndependentResources();
 	if (FAILED(hresult))
 	{
 		return hresult;
@@ -99,30 +100,98 @@ HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG widt
 int ActalogicApp::Run()
 {
 	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0))
+	for (;;)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
+		if (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
+			if (!GetMessage(&msg, NULL, 0, 0))
+			{
+				return msg.wParam;
+			}
 
-	return (int)msg.wParam;
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else
+		{
+			OnTick();
+			Sleep(1);
+		}
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+void ActalogicApp::OnTick()
+{
+	OnPreRender();
+	OnRender();
+	OnPostRender();
+}
+
+void ActalogicApp::OnPreRender()
+{
+
+}
+
+void ActalogicApp::OnRender()
+{
+	HRESULT hresult = S_OK;
+
+	hresult = m_d2d1Manager.CreateDeviceResources();
+	if (SUCCEEDED(hresult))
+	{
+		m_d2d1Manager.BeginDraw();
+		//TODO:‚±‚±‚É•`‰æˆ—‚ð’Ç‰Á
+
+		hresult = m_d2d1Manager.EndDraw();
+	}
+	if (hresult == D2DERR_RECREATE_TARGET)
+	{
+		hresult = S_OK;
+		m_d2d1Manager.DiscardDeviceResources();
+	}
+}
+
+void ActalogicApp::OnPostRender()
+{
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 LRESULT CALLBACK ActalogicApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message)
+	if (message == WM_CREATE)
 	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-		break;
+		LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
+		ActalogicApp *pApp = (ActalogicApp *)pcs->lpCreateParams;
+
+		SetWindowLongPtrW(hWnd, GWLP_USERDATA, PtrToUlong(pApp));
+	}
+	else
+	{
+		ActalogicApp *pApp = reinterpret_cast<ActalogicApp *>(static_cast<LONG_PTR>(
+			::GetWindowLongPtrW(hWnd, GWLP_USERDATA)));
+
+		switch (message)
+		{
+		case WM_DISPLAYCHANGE:
+			InvalidateRect(hWnd, NULL, FALSE);
+		case WM_PAINT:
+			pApp->OnRender();
+			ValidateRect(hWnd, NULL);
+			break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
+			break;
+		}
 	}
 
-	return 0;
+	return S_OK;
 }
 
 VOID ActalogicApp::SetClientSize(HWND hWnd, LONG sx, LONG sy)

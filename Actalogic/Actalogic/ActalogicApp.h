@@ -18,6 +18,18 @@ private:
 	// ウィンドウを初期化する
 	HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG width, LONG height);
 
+	// ゲームループ毎に呼ばれる
+	void OnTick();
+
+	// 描画を行う前に呼ばれる
+	void OnPreRender();
+
+	// 描画を行う必要がある際に呼ばれる
+	void OnRender();
+
+	// 描画を行った後に呼ばれる
+	void OnPostRender();
+
 private:
 	HINSTANCE m_hInstance;
 	HWND m_hWnd;
