@@ -22,6 +22,10 @@ private:
 	static TCHAR m_szTitle[];
 
 public:
+	// Windowsプロシージャ
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+
+	// クライアントウィンドウの大きさを指定してサイズ変更
+	static VOID SetClientSize(HWND hWnd, LONG sx, LONG sy);
 };
 

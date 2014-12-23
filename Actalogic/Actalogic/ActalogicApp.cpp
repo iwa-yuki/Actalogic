@@ -66,6 +66,8 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 		return 1;
 	}
 
+	SetClientSize(m_hWnd, 640, 480);
+
 	if (nCmdShow == SW_MAXIMIZE)
 	{
 		ShowWindow(m_hWnd, SW_RESTORE);
@@ -109,3 +111,14 @@ LRESULT CALLBACK ActalogicApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 	return 0;
 }
 
+VOID ActalogicApp::SetClientSize(HWND hWnd, LONG sx, LONG sy)
+{
+	RECT rc1;
+	RECT rc2;
+
+	GetWindowRect(hWnd, &rc1);
+	GetClientRect(hWnd, &rc2);
+	sx += ((rc1.right - rc1.left) - (rc2.right - rc2.left));
+	sy += ((rc1.bottom - rc1.top) - (rc2.bottom - rc2.top));
+	SetWindowPos(hWnd, NULL, 0, 0, sx, sy, (SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOMOVE));
+}
