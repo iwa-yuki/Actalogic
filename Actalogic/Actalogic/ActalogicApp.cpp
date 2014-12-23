@@ -4,10 +4,10 @@
 TCHAR ActalogicApp::m_szWindowClass[] = _T("Actalogic");
 TCHAR ActalogicApp::m_szTitle[] = _T("Actalogic");
 
-ActalogicApp::ActalogicApp()
+ActalogicApp::ActalogicApp():
+m_hWnd(NULL),
+m_hInstance(NULL)
 {
-	m_hInstance = NULL;
-	m_hWnd = NULL;
 }
 
 
@@ -16,6 +16,22 @@ ActalogicApp::~ActalogicApp()
 }
 
 HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
+{
+	HRESULT hresult;
+
+	hresult = m_d2d1Manager.Initialize();
+	if (FAILED(hresult))
+	{
+		return hresult;
+	}
+
+	m_hInstance = hInstance;
+	m_hWnd = InitializeWindow(hInstance, nCmdShow, 640, 480);
+
+	return m_hWnd==NULL ? E_FAIL : S_OK;
+}
+
+HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG width, LONG height)
 {
 	WNDCLASSEX wcex;
 
@@ -39,47 +55,45 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 			m_szTitle,
 			NULL);
 
-		return 1;
+		return NULL;
 	}
 
-	m_hInstance = hInstance;
-
-	m_hWnd = CreateWindow(
+	HWND hWnd = CreateWindow(
 		m_szWindowClass,
 		m_szTitle,
 		WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		640, 480,
+		width, height,
 		NULL,
 		NULL,
 		hInstance,
 		this
 		);
 
-	if (!m_hWnd)
+	if (!hWnd)
 	{
 		MessageBox(NULL,
 			_T("Call to CreateWindow failed!"),
 			m_szTitle,
 			NULL);
 
-		return 1;
+		return NULL;
 	}
 
-	SetClientSize(m_hWnd, 640, 480);
+	SetClientSize(hWnd, width, height);
 
 	if (nCmdShow == SW_MAXIMIZE)
 	{
-		ShowWindow(m_hWnd, SW_RESTORE);
+		ShowWindow(hWnd, SW_RESTORE);
 	}
 	else
 	{
-		ShowWindow(m_hWnd, nCmdShow);
+		ShowWindow(hWnd, nCmdShow);
 	}
 
-	UpdateWindow(m_hWnd);
+	UpdateWindow(hWnd);
 
-	return 0;
+	return hWnd;
 }
 
 int ActalogicApp::Run()

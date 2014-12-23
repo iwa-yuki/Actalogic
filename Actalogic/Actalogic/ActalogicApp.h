@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "D2D1Manager.h"
 
 class ActalogicApp
 {
@@ -14,8 +15,13 @@ public:
 	int Run();
 
 private:
+	// ウィンドウを初期化する
+	HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow, LONG width, LONG height);
+
+private:
 	HINSTANCE m_hInstance;
 	HWND m_hWnd;
+	D2D1Manager m_d2d1Manager;
 
 private:
 	static TCHAR m_szWindowClass[];

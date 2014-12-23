@@ -7,11 +7,17 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
 	LPTSTR lpCmdLine,
 	int nCmdShow)
 {
-	ActalogicApp theApp;
-
-	if (SUCCEEDED(theApp.Initialize(hInstance, nCmdShow)))
+	if (SUCCEEDED(CoInitialize(NULL)))
 	{
-		theApp.Run();
+		{
+			ActalogicApp theApp;
+
+			if (SUCCEEDED(theApp.Initialize(hInstance, nCmdShow)))
+			{
+				theApp.Run();
+			}
+		}
+		CoUninitialize();
 	}
 
 	return 0;
