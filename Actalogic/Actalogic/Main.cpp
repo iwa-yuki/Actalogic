@@ -1,23 +1,18 @@
 #include "pch.h"
 #include "ActalogicApp.h"
 
-int WINAPI WinMain(HINSTANCE hInstance,
+// エントリーポイント
+int WINAPI _tWinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
+	LPTSTR lpCmdLine,
 	int nCmdShow)
 {
 	ActalogicApp theApp;
-	if (FAILED(theApp.Initialize(hInstance, nCmdShow)))
+
+	if (SUCCEEDED(theApp.Initialize(hInstance, nCmdShow)))
 	{
-		return 1;
+		theApp.Run();
 	}
 
-	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-
-	return (int)msg.wParam;
+	return 0;
 }

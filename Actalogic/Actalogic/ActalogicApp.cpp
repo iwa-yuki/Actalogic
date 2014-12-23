@@ -47,7 +47,7 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 	m_hWnd = CreateWindow(
 		m_szWindowClass,
 		m_szTitle,
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		640, 480,
 		NULL,
@@ -66,9 +66,33 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 		return 1;
 	}
 
-	ShowWindow(m_hWnd, nCmdShow);
+	if (nCmdShow == SW_MAXIMIZE)
+	{
+		ShowWindow(m_hWnd, SW_RESTORE);
+	}
+	else
+	{
+		ShowWindow(m_hWnd, nCmdShow);
+	}
+
 	UpdateWindow(m_hWnd);
+
+	return 0;
 }
+
+int ActalogicApp::Run()
+{
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	return (int)msg.wParam;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 LRESULT CALLBACK ActalogicApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {

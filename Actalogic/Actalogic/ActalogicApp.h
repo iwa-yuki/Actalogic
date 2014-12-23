@@ -7,7 +7,11 @@ public:
 	ActalogicApp();
 	~ActalogicApp();
 
+	// アプリケーションを初期化する
 	HRESULT Initialize(HINSTANCE hInstance, int nCmdShow);
+
+	// アプリケーションを実行する
+	int Run();
 
 private:
 	HINSTANCE m_hInstance;
