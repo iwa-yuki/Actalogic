@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "D2D1Manager.h"
-#include "Entity.h"
+#include "EntityFPS.h"
 
 // Actalogicアプリケーション
 // ウィンドウ作成、メッセージループ処理を行います。
@@ -33,12 +33,16 @@ private:
 	// 描画を行った後に呼ばれる
 	void OnPostRender();
 
+	// ウィンドウサイズが変更されたときに呼ばれる
+	void OnResize(WORD width, WORD height, BOOL isActive);
+
 private:
 	HINSTANCE m_hInstance;
 	HWND m_hWnd;
 	D2D1Manager m_d2d1Manager;
+	BOOL m_isActive;
 
-
+	EntityFPS m_entityFPS;
 
 private:
 	static TCHAR m_szWindowClass[];

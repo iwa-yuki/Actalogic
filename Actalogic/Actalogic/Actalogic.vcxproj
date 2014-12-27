@@ -71,6 +71,7 @@
     <ClCompile Include="ActalogicApp.cpp" />
     <ClCompile Include="D2D1Manager.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityFPS.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
@@ -78,6 +79,7 @@
     <ClInclude Include="ActalogicApp.h" />
     <ClInclude Include="D2D1Manager.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityFPS.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

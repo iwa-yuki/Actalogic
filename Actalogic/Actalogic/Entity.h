@@ -7,6 +7,7 @@ public:
 	Entity();
 	virtual ~Entity();
 
+	HRESULT OnCreateDeviceIndependentResources();
 	HRESULT OnCreateDeviceResources();
 	void OnDiscardDeviceResources();
 

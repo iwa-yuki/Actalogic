@@ -7,7 +7,8 @@ TCHAR ActalogicApp::m_szTitle[] = _T("Actalogic");
 ActalogicApp::ActalogicApp():
 m_hWnd(NULL),
 m_hInstance(NULL),
-m_d2d1Manager()
+m_d2d1Manager(),
+m_entityFPS()
 {
 }
 
@@ -21,10 +22,11 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 	HRESULT hresult;
 
 	hresult = m_d2d1Manager.CreateDeviceIndependentResources();
-	if (FAILED(hresult))
-	{
-		return hresult;
-	}
+	if (FAILED(hresult)) {return hresult;}
+
+	//TODO:ここにEntityのデバイス非依存の初期化処理を追加
+	hresult = m_entityFPS.OnCreateDeviceIndependentResources();
+	if (FAILED(hresult)) { return hresult; }
 
 	m_hInstance = hInstance;
 	m_hWnd = InitializeWindow(hInstance, nCmdShow, 640.0F, 480.0F);
@@ -118,7 +120,14 @@ int ActalogicApp::Run()
 		}
 		else
 		{
-			OnTick();
+			if (m_isActive)
+			{
+				OnTick();
+			}
+			else
+			{
+				Sleep(1);
+			}
 		}
 	}
 }
@@ -135,7 +144,8 @@ void ActalogicApp::OnTick()
 
 void ActalogicApp::OnPreRender()
 {
-
+	//TODO:ここに描画前の処理を追加
+	m_entityFPS.OnPreRender();
 }
 
 void ActalogicApp::OnRender()
@@ -146,9 +156,9 @@ void ActalogicApp::OnRender()
 	if (SUCCEEDED(hresult))
 	{
 		m_d2d1Manager.BeginDraw();
+
 		//TODO:ここに描画処理を追加
-
-
+		m_entityFPS.OnRender();
 
 		hresult = m_d2d1Manager.EndDraw();
 	}
@@ -156,12 +166,21 @@ void ActalogicApp::OnRender()
 	{
 		hresult = S_OK;
 		m_d2d1Manager.DiscardDeviceResources();
+
+		//TODO:ここにリソースの解放処理を追加
+		m_entityFPS.OnDiscardDeviceResources();
 	}
 }
 
 void ActalogicApp::OnPostRender()
 {
+	//TODO:ここに描画前の処理を追加
+	m_entityFPS.OnPostRender();
+}
 
+void ActalogicApp::OnResize(WORD width, WORD height, BOOL isActive)
+{
+	m_isActive = isActive;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -188,6 +207,14 @@ LRESULT CALLBACK ActalogicApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 			pApp->OnRender();
 			ValidateRect(hWnd, NULL);
 			break;
+		case WM_SIZE:
+		{
+			BOOL isActive = wParam == SIZE_MINIMIZED ? FALSE : TRUE;
+			WORD width = lParam & 0xFFFF;
+			WORD height = (lParam >> 16) & 0xFFFF;
+			pApp->OnResize(width, height, isActive);
+			break;
+		}
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
