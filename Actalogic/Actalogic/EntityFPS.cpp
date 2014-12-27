@@ -28,10 +28,10 @@ void EntityFPS::OnPreRender()
 	CHRONO_SYSTEM_TIME nowTime = std::chrono::system_clock::now();
 
 	auto duration = nowTime - m_prevTime;
-	long long duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-	if (duration_ms >= 1000)
+	long long duration_us = std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
+	if (duration_us >= std::chrono::microseconds::period::den)
 	{
-		m_fps = ((float)m_counter * 1000.0F) / duration_ms;
+		m_fps = ((float)m_counter * std::chrono::microseconds::period::den) / duration_us;
 		m_counter = 0;
 		m_prevTime = nowTime;
 
