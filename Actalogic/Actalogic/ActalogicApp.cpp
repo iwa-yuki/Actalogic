@@ -148,6 +148,8 @@ void ActalogicApp::OnRender()
 		m_d2d1Manager.BeginDraw();
 		//TODO:‚±‚±‚É•`‰æˆ—‚ğ’Ç‰Á
 
+
+
 		hresult = m_d2d1Manager.EndDraw();
 	}
 	if (hresult == D2DERR_RECREATE_TARGET)

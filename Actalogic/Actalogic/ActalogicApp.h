@@ -1,7 +1,10 @@
 #pragma once
 #include "pch.h"
 #include "D2D1Manager.h"
+#include "Entity.h"
 
+// Actalogicアプリケーション
+// ウィンドウ作成、メッセージループ処理を行います。
 class ActalogicApp
 {
 public:
@@ -34,6 +37,8 @@ private:
 	HINSTANCE m_hInstance;
 	HWND m_hWnd;
 	D2D1Manager m_d2d1Manager;
+
+
 
 private:
 	static TCHAR m_szWindowClass[];
