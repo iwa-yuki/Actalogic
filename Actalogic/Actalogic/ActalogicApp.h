@@ -2,11 +2,14 @@
 #include "pch.h"
 #include "D2D1Manager.h"
 #include "EntityFPS.h"
+#include "EntityDebugInfoLayer.h"
 
 // Actalogicアプリケーション
 // ウィンドウ作成、メッセージループ処理を行います。
 class ActalogicApp
 {
+	friend class EntityDebugInfoLayer;
+
 public:
 	ActalogicApp();
 	~ActalogicApp();
@@ -43,6 +46,7 @@ private:
 	BOOL m_isActive;
 
 	EntityFPS m_entityFPS;
+	EntityDebugInfoLayer m_entityDebugInfoLayer;
 
 private:
 	static TCHAR m_szWindowClass[];

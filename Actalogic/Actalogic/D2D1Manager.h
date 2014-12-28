@@ -14,7 +14,7 @@ public:
 	// デバイス依存のリソースを作成する
 	HRESULT CreateDeviceResources(HWND hWnd);
 
-	// デバイス非依存のリソースを開放する
+	// デバイス依存のリソースを開放する
 	void DiscardDeviceResources();
 
 public:
@@ -24,11 +24,19 @@ public:
 	// 描画終了
 	HRESULT EndDraw();
 
-	// デスクトップのDPIを取得
-	void GetDesktopDpi(FLOAT *dpiX, FLOAT *dpiY);
+	// Direct2DFactoryを取得
+	ID2D1Factory* GetD2D1Factory();
+
+	// DirectWriteFactoryを取得
+	IDWriteFactory* GetDWriteFactory();
+
+	// RenderTargetを取得
+	ID2D1HwndRenderTarget* GetRenderTarget();
 
 private:
 	ID2D1Factory* m_pDirect2dFactory;
+	IDWriteFactory* m_pDWriteFactory;
+
 	ID2D1HwndRenderTarget* m_pRenderTarget;
 
 	D2D1_COLOR_F m_backgroundColor;
