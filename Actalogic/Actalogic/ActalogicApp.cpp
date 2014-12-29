@@ -8,8 +8,10 @@ ActalogicApp::ActalogicApp():
 m_hWnd(NULL),
 m_hInstance(NULL),
 m_d2d1Manager(),
-m_entityFPS()
+m_entityFPS(),
+m_entityDebugInfoLayer()
 {
+	m_entityDebugInfoLayer.SetApp(this);
 }
 
 
@@ -25,7 +27,10 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 	if (FAILED(hresult)) {return hresult;}
 
 	//TODO:ここにEntityのデバイス非依存の初期化処理を追加
-	hresult = m_entityFPS.OnCreateDeviceIndependentResources();
+	hresult = m_entityDebugInfoLayer.OnCreateDeviceIndependentResources(&m_d2d1Manager);
+	if (FAILED(hresult)) { return hresult; }
+
+	hresult = m_entityFPS.OnCreateDeviceIndependentResources(&m_d2d1Manager);
 	if (FAILED(hresult)) { return hresult; }
 
 	m_hInstance = hInstance;
@@ -132,6 +137,15 @@ int ActalogicApp::Run()
 	}
 }
 
+void ActalogicApp::Dispose()
+{
+	//TODO:ここにEntityのリソースの開放処理を追加
+	m_entityDebugInfoLayer.OnDiscardAllResources();
+	m_entityFPS.OnDiscardAllResources();
+
+	m_d2d1Manager.DiscardAllResources();
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -145,6 +159,7 @@ void ActalogicApp::OnTick()
 void ActalogicApp::OnPreRender()
 {
 	//TODO:ここに描画前の処理を追加
+	m_entityDebugInfoLayer.OnPreRender();
 	m_entityFPS.OnPreRender();
 }
 
@@ -153,28 +168,36 @@ void ActalogicApp::OnRender()
 	HRESULT hresult = S_OK;
 
 	hresult = m_d2d1Manager.CreateDeviceResources(m_hWnd);
+
+	//TODO:ここにデバイス依存リソース初期化処理を追加
+	if (SUCCEEDED(hresult)){ m_entityFPS.OnCreateDeviceResources(&m_d2d1Manager); }
+	if (SUCCEEDED(hresult)){ m_entityDebugInfoLayer.OnCreateDeviceResources(&m_d2d1Manager); }
+
 	if (SUCCEEDED(hresult))
 	{
 		m_d2d1Manager.BeginDraw();
 
 		//TODO:ここに描画処理を追加
-		m_entityFPS.OnRender();
+		m_entityFPS.OnRender(&m_d2d1Manager);
+		m_entityDebugInfoLayer.OnRender(&m_d2d1Manager);
 
 		hresult = m_d2d1Manager.EndDraw();
 	}
-	if (hresult == D2DERR_RECREATE_TARGET)
-	{
-		hresult = S_OK;
-		m_d2d1Manager.DiscardDeviceResources();
 
+	if (FAILED(hresult))
+	{
 		//TODO:ここにリソースの解放処理を追加
+		m_entityDebugInfoLayer.OnDiscardDeviceResources();
 		m_entityFPS.OnDiscardDeviceResources();
+
+		m_d2d1Manager.DiscardDeviceResources();
 	}
 }
 
 void ActalogicApp::OnPostRender()
 {
 	//TODO:ここに描画前の処理を追加
+	m_entityDebugInfoLayer.OnPostRender();
 	m_entityFPS.OnPostRender();
 }
 

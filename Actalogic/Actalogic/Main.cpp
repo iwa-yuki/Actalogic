@@ -16,6 +16,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
 			{
 				theApp.Run();
 			}
+
+			theApp.Dispose();
 		}
 		CoUninitialize();
 	}

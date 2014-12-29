@@ -14,7 +14,7 @@ EntityFPS::~EntityFPS()
 {
 }
 
-HRESULT EntityFPS::OnCreateDeviceIndependentResources()
+HRESULT EntityFPS::OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager)
 {
 	m_prevTime = std::chrono::system_clock::now();
 
@@ -35,7 +35,7 @@ void EntityFPS::OnPreRender()
 		m_counter = 0;
 		m_prevTime = nowTime;
 
-#ifdef _DEBUG
+#ifdef _NO_USE
 		{
 			TCHAR c[256];
 			_stprintf_s(c, 256, _T("FPS = %f\n"), m_fps);
@@ -43,4 +43,9 @@ void EntityFPS::OnPreRender()
 		}
 #endif
 	}
+}
+
+float EntityFPS::GetFPS()
+{
+	return m_fps;
 }
