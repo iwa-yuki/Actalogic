@@ -67,7 +67,7 @@ HWND ActalogicApp::InitializeWindow(HINSTANCE hInstance, int nCmdShow, FLOAT wid
 	}
 
 	FLOAT dpiX, dpiY;
-	m_d2d1Manager.GetD2D1Factory()->GetDesktopDpi(&dpiX, &dpiY);
+	m_d2d1Manager.GetDesktopDpi(&dpiX, &dpiY);
 	UINT desktopWidth = static_cast<UINT>(ceil(width * dpiX / 96.f));
 	UINT desktopHeight = static_cast<UINT>(ceil(height * dpiY / 96.f));
 
@@ -135,6 +135,15 @@ int ActalogicApp::Run()
 			}
 		}
 	}
+}
+
+void ActalogicApp::Dispose()
+{
+	//TODO:ここにEntityのリソースの開放処理を追加
+	m_entityDebugInfoLayer.OnDiscardAllResources();
+	m_entityFPS.OnDiscardAllResources();
+
+	m_d2d1Manager.DiscardAllResources();
 }
 
 

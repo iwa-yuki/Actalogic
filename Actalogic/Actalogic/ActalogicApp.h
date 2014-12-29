@@ -20,6 +20,9 @@ public:
 	// アプリケーションを実行する
 	int Run();
 
+	// アプリケーションを開放する
+	void Dispose();
+
 private:
 	// ウィンドウを初期化する
 	HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow, FLOAT width, FLOAT height);

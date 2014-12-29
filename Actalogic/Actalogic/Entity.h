@@ -17,8 +17,8 @@ public:
 	// デバイス依存リソースの開放
 	void OnDiscardDeviceResources();
 
-	// デバイス非依存リソースの開放
-	void OnDiscardDeviceIndependentResources();
+	// すべてのリソースの開放
+	void OnDiscardAllResources();
 
 
 	// レンダリング前処理

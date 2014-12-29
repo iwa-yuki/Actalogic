@@ -12,10 +12,9 @@ m_backgroundColor(D2D1::ColorF(D2D1::ColorF::White))
 
 D2D1Manager::~D2D1Manager()
 {
-	DiscardDeviceResources();
-
-	if (m_pDirect2dFactory != nullptr) { m_pDirect2dFactory->Release(); m_pDirect2dFactory = nullptr; }
-	if (m_pDWriteFactory != nullptr) { m_pDWriteFactory->Release(); m_pDWriteFactory = nullptr; }
+	assert(!m_pDirect2dFactory);
+	assert(!m_pDWriteFactory);
+	assert(!m_pRenderTarget);
 }
 
 HRESULT D2D1Manager::CreateDeviceIndependentResources()
@@ -62,6 +61,14 @@ void D2D1Manager::DiscardDeviceResources()
 	if (m_pRenderTarget != nullptr) { m_pRenderTarget->Release(); m_pRenderTarget = nullptr; }
 }
 
+void D2D1Manager::DiscardAllResources()
+{
+	DiscardDeviceResources();
+
+	if (m_pDirect2dFactory != nullptr) { m_pDirect2dFactory->Release(); m_pDirect2dFactory = nullptr; }
+	if (m_pDWriteFactory != nullptr) { m_pDWriteFactory->Release(); m_pDWriteFactory = nullptr; }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void D2D1Manager::BeginDraw()
@@ -82,24 +89,59 @@ HRESULT D2D1Manager::EndDraw()
 
 	return m_pRenderTarget->EndDraw();
 }
+//
+//ID2D1Factory* D2D1Manager::GetD2D1Factory()
+//{
+//	assert(m_pDirect2dFactory);
+//
+//	return m_pDirect2dFactory;
+//}
+//
+//IDWriteFactory* D2D1Manager::GetDWriteFactory()
+//{
+//	assert(m_pDWriteFactory);
+//
+//	return m_pDWriteFactory;
+//}
+//
+//ID2D1HwndRenderTarget* D2D1Manager::GetRenderTarget()
+//{
+//	assert(m_pRenderTarget);
+//
+//	return m_pRenderTarget;
+//}
 
-ID2D1Factory* D2D1Manager::GetD2D1Factory()
+void D2D1Manager::GetDesktopDpi(FLOAT *dpiX, FLOAT *dpiY)
 {
-	assert(m_pDirect2dFactory);
-
-	return m_pDirect2dFactory;
+	m_pDirect2dFactory->GetDesktopDpi(dpiX, dpiY);
 }
 
-IDWriteFactory* D2D1Manager::GetDWriteFactory()
+D2D1_SIZE_F D2D1Manager::GetRenderTargetSize()
 {
-	assert(m_pDWriteFactory);
-
-	return m_pDWriteFactory;
+	return m_pRenderTarget->GetSize();
 }
 
-ID2D1HwndRenderTarget* D2D1Manager::GetRenderTarget()
+HRESULT D2D1Manager::CreateTextFormat(const TCHAR *fontFamilyName, IDWriteFontCollection *fontCollection,
+	DWRITE_FONT_WEIGHT fontWeight, DWRITE_FONT_STYLE fontStyle, DWRITE_FONT_STRETCH fontStretch,
+	FLOAT fontSize, const TCHAR *localeName, IDWriteTextFormat ** textFormat)
 {
-	assert(m_pRenderTarget);
+	return m_pDWriteFactory->CreateTextFormat(fontFamilyName,
+		fontCollection,
+		fontWeight,
+		fontStyle,
+		fontStretch,
+		fontSize,
+		localeName,
+		textFormat);
+}
 
-	return m_pRenderTarget;
+HRESULT D2D1Manager::CreateSolidColorBrush(const D2D1_COLOR_F &colorF, ID2D1SolidColorBrush **ppBrush)
+{
+	return m_pRenderTarget->CreateSolidColorBrush(colorF, ppBrush);
+}
+
+void D2D1Manager::DrawText(const TCHAR *text,UINT32 textLength ,IDWriteTextFormat *pTextFormat,
+	const D2D1_RECT_F &rc, ID2D1Brush *pBrush)
+{
+	m_pRenderTarget->DrawText(text, textLength, pTextFormat, rc, pBrush);
 }

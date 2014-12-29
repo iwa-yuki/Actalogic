@@ -26,9 +26,9 @@ void Entity::OnDiscardDeviceResources()
 
 }
 
-void Entity::OnDiscardDeviceIndependentResources()
+void Entity::OnDiscardAllResources()
 {
-
+	OnDiscardDeviceResources();
 }
 
 void Entity::OnPreRender()

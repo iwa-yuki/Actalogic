@@ -14,7 +14,7 @@ public:
 	HRESULT OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager);
 	HRESULT OnCreateDeviceResources(D2D1Manager *pD2D1Manager);
 	void OnDiscardDeviceResources();
-	void OnDiscardDeviceIndependentResources();
+	void OnDiscardAllResources();
 
 	void OnRender(D2D1Manager *pD2D1Manager);
 private:
