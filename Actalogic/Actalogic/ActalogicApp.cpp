@@ -128,6 +128,11 @@ int ActalogicApp::Run()
 			if (m_isActive)
 			{
 				OnTick();
+
+				if (m_inputHelper.GetKeyState(InputHelper::INPUT_ESCAPE))
+				{
+					return 0;
+				}
 			}
 			else
 			{
@@ -151,6 +156,8 @@ void ActalogicApp::Dispose()
 
 void ActalogicApp::OnTick()
 {
+	m_inputHelper.OnTick();
+
 	OnPreRender();
 	OnRender();
 	OnPostRender();

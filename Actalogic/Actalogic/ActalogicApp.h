@@ -3,6 +3,7 @@
 #include "D2D1Manager.h"
 #include "EntityFPS.h"
 #include "EntityDebugInfoLayer.h"
+#include "InputHelper.h"
 
 // Actalogicアプリケーション
 // ウィンドウ作成、メッセージループ処理を行います。
@@ -50,6 +51,8 @@ private:
 
 	EntityFPS m_entityFPS;
 	EntityDebugInfoLayer m_entityDebugInfoLayer;
+
+	InputHelper m_inputHelper;
 
 private:
 	static TCHAR m_szWindowClass[];

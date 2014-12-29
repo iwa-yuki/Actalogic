@@ -54,7 +54,9 @@ void EntityDebugInfoLayer::OnRender(D2D1Manager *pD2D1Manager)
 	D2D1_SIZE_F targetSize = pD2D1Manager->GetRenderTargetSize();
 	TCHAR c[1024];
 	float fps = (m_theApp->m_entityFPS).GetFPS();
-	int nc = _stprintf_s(c, 1024, _T("FPS = %.2f"), fps);
+	int keyEscape = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_ESCAPE) ? 1 : 0;
+
+	int nc = _stprintf_s(c, 1024, _T("FPS = %.2f\nKey.escape = %d"), fps, keyEscape);
 	
 	pD2D1Manager->DrawText(c, nc,
 		m_pDWTextFormat, D2D1::RectF(0, 0, targetSize.width, targetSize.height), m_pTextBrush);
