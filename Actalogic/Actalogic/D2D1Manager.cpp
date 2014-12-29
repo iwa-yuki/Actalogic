@@ -4,6 +4,7 @@
 D2D1Manager::D2D1Manager():
 m_pDirect2dFactory(nullptr),
 m_pDWriteFactory(nullptr),
+m_pIWICFactory(nullptr),
 m_pRenderTarget(nullptr),
 m_backgroundColor(D2D1::ColorF(D2D1::ColorF::White))
 {
@@ -14,6 +15,7 @@ D2D1Manager::~D2D1Manager()
 {
 	assert(!m_pDirect2dFactory);
 	assert(!m_pDWriteFactory);
+	assert(!m_pIWICFactory);
 	assert(!m_pRenderTarget);
 }
 
@@ -26,6 +28,10 @@ HRESULT D2D1Manager::CreateDeviceIndependentResources()
 
 	hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(m_pDWriteFactory), 
 		reinterpret_cast<IUnknown **>(&m_pDWriteFactory));
+	if (FAILED(hr)) { return hr; }
+
+	hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER,
+		IID_IWICImagingFactory, (LPVOID*)&m_pIWICFactory);
 	if (FAILED(hr)) { return hr; }
 
 	return hr;
@@ -67,6 +73,7 @@ void D2D1Manager::DiscardAllResources()
 
 	if (m_pDirect2dFactory != nullptr) { m_pDirect2dFactory->Release(); m_pDirect2dFactory = nullptr; }
 	if (m_pDWriteFactory != nullptr) { m_pDWriteFactory->Release(); m_pDWriteFactory = nullptr; }
+	if (m_pIWICFactory != nullptr) { m_pIWICFactory->Release(); m_pIWICFactory = nullptr; }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -144,4 +151,63 @@ void D2D1Manager::DrawText(const TCHAR *text,UINT32 textLength ,IDWriteTextForma
 	const D2D1_RECT_F &rc, ID2D1Brush *pBrush)
 {
 	m_pRenderTarget->DrawText(text, textLength, pTextFormat, rc, pBrush);
+}
+
+HRESULT D2D1Manager::LoadBitmapFromFile(LPTSTR uri, ID2D1Bitmap **ppBitmap)
+{
+	IWICBitmapDecoder *pDecoder = nullptr;
+	IWICBitmapFrameDecode *pSource = nullptr;
+	IWICStream *pStream = nullptr;
+	IWICFormatConverter *pConverter = nullptr;
+	IWICBitmapScaler *pScaler = nullptr;
+
+	HRESULT hr = m_pIWICFactory->CreateDecoderFromFilename(
+		uri,
+		NULL,
+		GENERIC_READ,
+		WICDecodeMetadataCacheOnLoad,
+		&pDecoder
+		);
+
+	if (SUCCEEDED(hr))
+	{
+		hr = pDecoder->GetFrame(0, &pSource);
+	}
+	if (SUCCEEDED(hr))
+	{
+		hr = m_pIWICFactory->CreateFormatConverter(&pConverter);
+	}
+	if (SUCCEEDED(hr))
+	{
+		hr = pConverter->Initialize(
+			pSource,
+			GUID_WICPixelFormat32bppPBGRA,
+			WICBitmapDitherTypeNone,
+			NULL,
+			0.f,
+			WICBitmapPaletteTypeMedianCut
+			);
+	}
+	if (SUCCEEDED(hr))
+	{
+		hr = m_pRenderTarget->CreateBitmapFromWicBitmap(
+			pConverter,
+			NULL,
+			ppBitmap
+			);
+	}
+
+	if (pDecoder != nullptr){ pDecoder->Release(); }
+	if (pSource != nullptr){ pSource->Release(); }
+	if (pStream != nullptr){ pStream->Release(); }
+	if (pConverter != nullptr){ pConverter->Release(); }
+	if (pScaler != nullptr){ pScaler->Release(); }
+
+	return hr;
+}
+
+void D2D1Manager::DrawBitmap(ID2D1Bitmap *pBitmap, const D2D1_RECT_F &destRect,
+	FLOAT opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode, const D2D1_RECT_F &srcRect)
+{
+	m_pRenderTarget->DrawBitmap(pBitmap, destRect, opacity, interpolationMode, srcRect);
 }

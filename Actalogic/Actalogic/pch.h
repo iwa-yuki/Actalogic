@@ -10,12 +10,14 @@
 
 #include <d2d1.h>
 #include <dwrite.h>
+#include <wincodec.h>
 
 #include <chrono>
 #include <unordered_map>
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
+#pragma comment(lib, "windowscodecs.lib")
 
 #define CHRONO_SYSTEM_TIME std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration >
 

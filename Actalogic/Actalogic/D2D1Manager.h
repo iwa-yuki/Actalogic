@@ -49,12 +49,21 @@ public:
 	// SolidColorBrushを作成
 	HRESULT CreateSolidColorBrush(const D2D1_COLOR_F &colorF, ID2D1SolidColorBrush **ppBrush);
 
+	// テキストを描画
 	void DrawText(const TCHAR *text, UINT32 textLength, IDWriteTextFormat *pTextFormat,
 		const D2D1_RECT_F &rc, ID2D1Brush *pBrush);
+
+	// 画像ファイルをロード
+	HRESULT LoadBitmapFromFile(LPTSTR uri, ID2D1Bitmap **ppBitmap);
+
+	// 画像を描画
+	void DrawBitmap(ID2D1Bitmap *pBitmap, const D2D1_RECT_F &destRect,
+		FLOAT opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode, const D2D1_RECT_F &srcRect);
 
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	IDWriteFactory* m_pDWriteFactory;
+	IWICImagingFactory* m_pIWICFactory;
 
 	ID2D1HwndRenderTarget* m_pRenderTarget;
 

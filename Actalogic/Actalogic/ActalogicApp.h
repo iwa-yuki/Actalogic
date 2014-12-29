@@ -3,6 +3,7 @@
 #include "D2D1Manager.h"
 #include "EntityFPS.h"
 #include "EntityDebugInfoLayer.h"
+#include "EntitySceneContainer.h"
 #include "InputHelper.h"
 
 // Actalogicアプリケーション
@@ -51,6 +52,7 @@ private:
 
 	EntityFPS m_entityFPS;
 	EntityDebugInfoLayer m_entityDebugInfoLayer;
+	EntitySceneContainer m_entitySceneContainer;
 
 	InputHelper m_inputHelper;
 
