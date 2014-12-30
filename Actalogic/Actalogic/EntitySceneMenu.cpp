@@ -6,15 +6,15 @@ EntitySceneMenu::EntitySceneMenu() :
 m_pBitmapBackground(nullptr),
 m_cursor(0),
 m_keyInputCounter(0),
-m_pTheApp(nullptr)
+m_pContainer(nullptr)
 {
 }
 
-EntitySceneMenu::EntitySceneMenu(ActalogicApp *pApp) :
+EntitySceneMenu::EntitySceneMenu(EntitySceneContainer *pContainer) :
 m_pBitmapBackground(nullptr),
 m_cursor(0),
 m_keyInputCounter(0),
-m_pTheApp(pApp)
+m_pContainer(pContainer)
 {
 }
 
@@ -71,9 +71,21 @@ void EntitySceneMenu::OnPreRender(InputHelper *pInputHelper)
 	}
 	else if (pInputHelper->GetKeyState(InputHelper::INPUT_SELECT))
 	{
-		if (m_cursor == 3) // EXIT
+		switch (m_cursor)
 		{
-			m_pTheApp->Exit();
+		case 0: // Puzzle
+			m_pContainer->SetPuzzle();
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3: // EXIT
+			m_pContainer->SetExit();
+			break;
+		default:
+			assert(false);
+			break;
 		}
 	}
 	else

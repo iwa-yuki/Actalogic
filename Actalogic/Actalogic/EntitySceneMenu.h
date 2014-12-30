@@ -3,14 +3,14 @@
 #include "Entity.h"
 #include "InputHelper.h"
 
-class ActalogicApp;
+class EntitySceneContainer;
 
 class EntitySceneMenu :
 	public Entity
 {
 public:
 	EntitySceneMenu();
-	EntitySceneMenu(ActalogicApp *pApp);
+	EntitySceneMenu(EntitySceneContainer *pContainer);
 	virtual ~EntitySceneMenu();
 
 	HRESULT OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager);
@@ -23,7 +23,7 @@ public:
 	void OnPostRender();
 
 private:
-	ActalogicApp *m_pTheApp;
+	EntitySceneContainer *m_pContainer;
 	ID2D1Bitmap *m_pBitmapBackground;
 	int m_cursor;
 	int m_keyInputCounter;
