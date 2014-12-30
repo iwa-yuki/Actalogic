@@ -10,7 +10,8 @@ m_hInstance(NULL),
 m_d2d1Manager(),
 m_entityFPS(),
 m_entityDebugInfoLayer(),
-m_entitySceneContainer()
+m_entitySceneContainer(this),
+m_inputHelper()
 {
 	m_entityDebugInfoLayer.SetApp(this);
 }
@@ -38,7 +39,7 @@ HRESULT ActalogicApp::Initialize(HINSTANCE hInstance, int nCmdShow)
 	if (FAILED(hresult)) { return hresult; }
 
 	m_hInstance = hInstance;
-	m_hWnd = InitializeWindow(hInstance, nCmdShow, 640.0F, 480.0F);
+	m_hWnd = InitializeWindow(hInstance, nCmdShow, 800.0F, 600.0F);
 
 	return m_hWnd==NULL ? E_FAIL : S_OK;
 }
@@ -132,11 +133,6 @@ int ActalogicApp::Run()
 			if (m_isActive)
 			{
 				OnTick();
-
-				if (m_inputHelper.GetKeyState(InputHelper::INPUT_ESCAPE))
-				{
-					return 0;
-				}
 			}
 			else
 			{
@@ -155,6 +151,11 @@ void ActalogicApp::Dispose()
 	m_d2d1Manager.DiscardAllResources();
 }
 
+void ActalogicApp::Exit()
+{
+	PostMessage(m_hWnd, WM_DESTROY, 0, 0);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -170,9 +171,9 @@ void ActalogicApp::OnTick()
 void ActalogicApp::OnPreRender()
 {
 	//TODO:Ç±Ç±Ç…ï`âÊëOÇÃèàóùÇí«â¡
-	m_entityDebugInfoLayer.OnPreRender();
-	m_entityFPS.OnPreRender();
-	m_entitySceneContainer.OnPreRender();
+	m_entityDebugInfoLayer.OnPreRender(&m_inputHelper);
+	m_entityFPS.OnPreRender(&m_inputHelper);
+	m_entitySceneContainer.OnPreRender(&m_inputHelper);
 }
 
 void ActalogicApp::OnRender()

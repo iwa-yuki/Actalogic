@@ -18,5 +18,10 @@ private:
 
 public:
 	static tstring INPUT_ESCAPE;
+	static tstring INPUT_SELECT;
+	static tstring INPUT_UP;
+	static tstring INPUT_DOWN;
+	static tstring INPUT_RIGHT;
+	static tstring INPUT_LEFT;
 };
 

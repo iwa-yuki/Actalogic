@@ -3,8 +3,8 @@
 #include "D2D1Manager.h"
 #include "EntityFPS.h"
 #include "EntityDebugInfoLayer.h"
-#include "EntitySceneContainer.h"
 #include "InputHelper.h"
+#include "EntitySceneContainer.h"
 
 // Actalogicアプリケーション
 // ウィンドウ作成、メッセージループ処理を行います。
@@ -25,6 +25,9 @@ public:
 	// アプリケーションを開放する
 	void Dispose();
 
+	// アプリケーションを終了する
+	void Exit();
+
 private:
 	// ウィンドウを初期化する
 	HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow, FLOAT width, FLOAT height);
@@ -43,6 +46,7 @@ private:
 
 	// ウィンドウサイズが変更されたときに呼ばれる
 	void OnResize(WORD width, WORD height, BOOL isActive);
+
 
 private:
 	HINSTANCE m_hInstance;

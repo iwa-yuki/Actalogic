@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "D2D1Manager.h"
+#include "InputHelper.h"
 
 class Entity
 {
@@ -22,7 +23,7 @@ public:
 
 
 	// レンダリング前処理
-	void OnPreRender();
+	void OnPreRender(InputHelper *pInputHelper);
 
 	// レンダリング処理
 	void OnRender(D2D1Manager *pD2D1Manager);

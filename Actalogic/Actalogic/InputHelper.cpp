@@ -2,12 +2,22 @@
 #include "InputHelper.h"
 
 tstring InputHelper::INPUT_ESCAPE = _T("escape");
+tstring InputHelper::INPUT_SELECT = _T("select");
+tstring InputHelper::INPUT_UP = _T("up");
+tstring InputHelper::INPUT_DOWN = _T("down");
+tstring InputHelper::INPUT_RIGHT = _T("right");
+tstring InputHelper::INPUT_LEFT = _T("left");
 
 InputHelper::InputHelper()
 {
 	m_pKeyState = new BYTE[256];
 
 	SetKeyConfig(INPUT_ESCAPE, VK_ESCAPE);
+	SetKeyConfig(INPUT_SELECT, 'Z');
+	SetKeyConfig(INPUT_UP, VK_UP);
+	SetKeyConfig(INPUT_DOWN, VK_DOWN);
+	SetKeyConfig(INPUT_RIGHT, VK_RIGHT);
+	SetKeyConfig(INPUT_LEFT, VK_LEFT);
 }
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Entity.h"
+#include "InputHelper.h"
 
 // FPS‚ÌŒvZ‚ğs‚¤
 class EntityFPS :
@@ -11,7 +12,7 @@ public:
 	virtual ~EntityFPS();
 
 	HRESULT OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager);
-	void OnPreRender();
+	void OnPreRender(InputHelper *pInputHelper);
 
 private:
 	CHRONO_SYSTEM_TIME m_prevTime;

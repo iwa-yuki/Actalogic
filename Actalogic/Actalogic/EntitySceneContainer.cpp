@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EntitySceneContainer.h"
+#include "ActalogicApp.h"
 
 
 enum EntityScene : long
@@ -11,7 +12,15 @@ enum EntityScene : long
 
 EntitySceneContainer::EntitySceneContainer() :
 m_scene(EntityScene::MENU),
-m_entityMenu()
+m_entityMenu(nullptr),
+m_pTheApp(nullptr)
+{
+}
+
+EntitySceneContainer::EntitySceneContainer(ActalogicApp *pApp) :
+m_scene(EntityScene::MENU),
+m_entityMenu(pApp),
+m_pTheApp(pApp)
 {
 }
 
@@ -49,12 +58,12 @@ void EntitySceneContainer::OnDiscardAllResources()
 	m_entityMenu.OnDiscardAllResources();
 }
 
-void EntitySceneContainer::OnPreRender()
+void EntitySceneContainer::OnPreRender(InputHelper *pInputHelper)
 {
 	switch (m_scene)
 	{
 	case EntityScene::MENU:
-		m_entityMenu.OnPreRender();
+		m_entityMenu.OnPreRender(pInputHelper);
 		break;
 	default:
 		break;

@@ -55,8 +55,13 @@ void EntityDebugInfoLayer::OnRender(D2D1Manager *pD2D1Manager)
 	TCHAR c[1024];
 	float fps = (m_theApp->m_entityFPS).GetFPS();
 	int keyEscape = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_ESCAPE) ? 1 : 0;
+	int keySelect = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_SELECT) ? 1 : 0;
+	int keyUp = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_UP) ? 1 : 0;
+	int keyDown = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_DOWN) ? 1 : 0;
+	int keyRight = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_RIGHT) ? 1 : 0;
+	int keyLeft = (m_theApp->m_inputHelper).GetKeyState(InputHelper::INPUT_LEFT) ? 1 : 0;
 
-	int nc = _stprintf_s(c, 1024, _T("FPS = %.2f\nKey.escape = %d"), fps, keyEscape);
+	int nc = _stprintf_s(c, 1024, _T("FPS = %.2f\nKey.escape = %d, Key.select = %d, Key.up = %d, Key.down = %d, Key.right = %d, Key.left = %d"), fps, keyEscape, keySelect, keyUp, keyDown, keyRight, keyLeft);
 	
 	pD2D1Manager->DrawText(c, nc,
 		m_pDWTextFormat, D2D1::RectF(0, 0, targetSize.width, targetSize.height), m_pTextBrush);

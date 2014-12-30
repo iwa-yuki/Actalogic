@@ -31,7 +31,7 @@ void Entity::OnDiscardAllResources()
 	OnDiscardDeviceResources();
 }
 
-void Entity::OnPreRender()
+void Entity::OnPreRender(InputHelper *pInputHelper)
 {
 
 }

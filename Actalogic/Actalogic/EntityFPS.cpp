@@ -21,7 +21,7 @@ HRESULT EntityFPS::OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager)
 	return S_OK;
 }
 
-void EntityFPS::OnPreRender()
+void EntityFPS::OnPreRender(InputHelper *pInputHelper)
 {
 	++m_counter;
 
