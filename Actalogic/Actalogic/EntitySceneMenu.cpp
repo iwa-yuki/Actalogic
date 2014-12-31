@@ -76,7 +76,8 @@ void EntitySceneMenu::OnPreRender(InputHelper *pInputHelper)
 		case 0: // Puzzle
 			m_pContainer->SetPuzzle();
 			break;
-		case 1:
+		case 1: // Creative
+			m_pContainer->SetCreative();
 			break;
 		case 2:
 			break;

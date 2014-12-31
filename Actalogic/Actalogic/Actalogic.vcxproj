@@ -74,6 +74,7 @@
     <ClCompile Include="EntityDebugInfoLayer.cpp" />
     <ClCompile Include="EntityFPS.cpp" />
     <ClCompile Include="EntitySceneContainer.cpp" />
+    <ClCompile Include="EntitySceneCreative.cpp" />
     <ClCompile Include="EntitySceneMenu.cpp" />
     <ClCompile Include="EntityScenePuzzle.cpp" />
     <ClCompile Include="InputHelper.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="EntityDebugInfoLayer.h" />
     <ClInclude Include="EntityFPS.h" />
     <ClInclude Include="EntitySceneContainer.h" />
+    <ClInclude Include="EntitySceneCreative.h" />
     <ClInclude Include="EntitySceneMenu.h" />
     <ClInclude Include="EntityScenePuzzle.h" />
     <ClInclude Include="InputHelper.h" />

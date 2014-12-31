@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "EntitySceneMenu.h"
 #include "EntityScenePuzzle.h"
+#include "EntitySceneCreative.h"
 #include "InputHelper.h"
 
 enum EntityScene : long;
@@ -37,4 +38,5 @@ private:
 
 	EntitySceneMenu m_entityMenu;
 	EntityScenePuzzle m_entityPuzzle;
+	EntitySceneCreative m_entityCreative;
 };
