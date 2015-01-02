@@ -24,5 +24,8 @@ public:
 private:
 	EntitySceneContainer *m_pContainer;
 	ID2D1Bitmap *m_pBitmapBackground;
+	ID2D1SolidColorBrush *m_pSolidBrush;
+	POINT m_currentCursor;
+	int m_keyInputCounter;
 };
 

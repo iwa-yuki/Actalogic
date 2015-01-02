@@ -211,3 +211,15 @@ void D2D1Manager::DrawBitmap(ID2D1Bitmap *pBitmap, const D2D1_RECT_F &destRect,
 {
 	m_pRenderTarget->DrawBitmap(pBitmap, destRect, opacity, interpolationMode, srcRect);
 }
+
+
+void D2D1Manager::DrawLine(D2D1_POINT_2F point0, D2D1_POINT_2F point1, ID2D1Brush *pBrush, FLOAT width)
+{
+	m_pRenderTarget->DrawLine(point0, point1, pBrush, width);
+}
+
+void D2D1Manager::DrawRectangle(const D2D1_RECT_F &rc, ID2D1Brush *pBrush, FLOAT width)
+{
+	m_pRenderTarget->DrawRectangle(rc, pBrush, width);
+}
+

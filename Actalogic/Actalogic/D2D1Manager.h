@@ -60,6 +60,12 @@ public:
 	void DrawBitmap(ID2D1Bitmap *pBitmap, const D2D1_RECT_F &destRect,
 		FLOAT opacity, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode, const D2D1_RECT_F &srcRect);
 
+	// íºê¸Çï`âÊ
+	void DrawLine(D2D1_POINT_2F point0, D2D1_POINT_2F point1, ID2D1Brush *pBrush, FLOAT width = 1.0F);
+
+	// ãÈå`Çï`âÊ
+	void DrawRectangle(const D2D1_RECT_F &rc, ID2D1Brush *pBrush, FLOAT width = 1.0F);
+
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	IDWriteFactory* m_pDWriteFactory;
