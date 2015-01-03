@@ -26,15 +26,6 @@ public:
 	// 描画終了
 	HRESULT EndDraw();
 
-	//// Direct2DFactoryを取得
-	//ID2D1Factory* GetD2D1Factory();
-
-	//// DirectWriteFactoryを取得
-	//IDWriteFactory* GetDWriteFactory();
-
-	//// RenderTargetを取得
-	//ID2D1HwndRenderTarget* GetRenderTarget();
-
 	// デスクトップDPIを取得
 	void GetDesktopDpi(FLOAT *dpiX, FLOAT *dpiY);
 
@@ -48,6 +39,9 @@ public:
 
 	// SolidColorBrushを作成
 	HRESULT CreateSolidColorBrush(const D2D1_COLOR_F &colorF, ID2D1SolidColorBrush **ppBrush);
+
+	// PathGeometryを作成
+	HRESULT CreatePathGeometry(ID2D1PathGeometry **ppGeometry);
 
 	// テキストを描画
 	void DrawText(const TCHAR *text, UINT32 textLength, IDWriteTextFormat *pTextFormat,

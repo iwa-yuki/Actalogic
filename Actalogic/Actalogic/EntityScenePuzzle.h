@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Entity.h"
+#include "ActalogicCell.h"
 
 class EntitySceneContainer;
 
@@ -27,5 +28,11 @@ private:
 	ID2D1SolidColorBrush *m_pSolidBrush;
 	POINT m_currentCursor;
 	int m_keyInputCounter;
+
+	std::list<ActalogicCell*> m_cells;
+	ActalogicCell* m_stackedCell;
+
+private:
+	void UpdateCellState();
 };
 

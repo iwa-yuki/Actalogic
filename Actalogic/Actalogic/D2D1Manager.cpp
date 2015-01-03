@@ -96,27 +96,6 @@ HRESULT D2D1Manager::EndDraw()
 
 	return m_pRenderTarget->EndDraw();
 }
-//
-//ID2D1Factory* D2D1Manager::GetD2D1Factory()
-//{
-//	assert(m_pDirect2dFactory);
-//
-//	return m_pDirect2dFactory;
-//}
-//
-//IDWriteFactory* D2D1Manager::GetDWriteFactory()
-//{
-//	assert(m_pDWriteFactory);
-//
-//	return m_pDWriteFactory;
-//}
-//
-//ID2D1HwndRenderTarget* D2D1Manager::GetRenderTarget()
-//{
-//	assert(m_pRenderTarget);
-//
-//	return m_pRenderTarget;
-//}
 
 void D2D1Manager::GetDesktopDpi(FLOAT *dpiX, FLOAT *dpiY)
 {
@@ -145,6 +124,11 @@ HRESULT D2D1Manager::CreateTextFormat(const TCHAR *fontFamilyName, IDWriteFontCo
 HRESULT D2D1Manager::CreateSolidColorBrush(const D2D1_COLOR_F &colorF, ID2D1SolidColorBrush **ppBrush)
 {
 	return m_pRenderTarget->CreateSolidColorBrush(colorF, ppBrush);
+}
+
+HRESULT D2D1Manager::CreatePathGeometry(ID2D1PathGeometry **ppGeometry)
+{
+	return m_pDirect2dFactory->CreatePathGeometry(ppGeometry);
 }
 
 void D2D1Manager::DrawText(const TCHAR *text,UINT32 textLength ,IDWriteTextFormat *pTextFormat,
