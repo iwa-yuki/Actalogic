@@ -78,12 +78,15 @@ void EntityScenePuzzle::OnDiscardAllResources()
 void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 {
 	bool isKeyDown = false;
+
+	// メニューへ戻る
 	if (pInputHelper->GetKeyState(InputHelper::INPUT_ESCAPE))
 	{
 		m_pContainer->SetMenu();
 		isKeyDown = true;
 	}
 
+	// カーソル移動
 	if (pInputHelper->GetKeyState(InputHelper::INPUT_UP))
 	{
 		if (m_keyInputCounter == 0 || (m_keyInputCounter >= 24 && m_keyInputCounter % 3 == 0))
@@ -117,10 +120,13 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 		}
 		isKeyDown = true;
 	}
+
+	// 選択
 	if (pInputHelper->GetKeyState(InputHelper::INPUT_SELECT))
 	{
 		if (m_keyInputCounter == 0)
 		{
+			// カーソル位置にセルがあるか検索
 			ActalogicCell *pTmpCell = nullptr;
 			for (ActalogicCell *pCell : m_cells)
 			{
@@ -131,22 +137,26 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 					break;
 				}
 			}
+
+			// カーソル位置のセルを削除
 			if (pTmpCell != nullptr)
 			{
 				m_cells.remove(pTmpCell);
 				UpdateCellState();
+				pTmpCell->ClearLink(ActalogicCellDirection::DOWN);
+				pTmpCell->ClearLink(ActalogicCellDirection::UP);
+				pTmpCell->ClearLink(ActalogicCellDirection::RIGHT);
+				pTmpCell->ClearLink(ActalogicCellDirection::LEFT);
 			}
-			if (m_stackedCell == nullptr)
-			{
-				m_stackedCell = pTmpCell;
-			}
-			else
+
+			// m_stackedCellにセルが保存されていたらカーソル位置のセルと入れ替える
+			if (m_stackedCell != nullptr)
 			{
 				m_stackedCell->SetPosition(m_currentCursor);
 				m_cells.push_back(m_stackedCell);
 				UpdateCellState();
-				m_stackedCell = pTmpCell;
 			}
+			m_stackedCell = pTmpCell;
 		}
 		isKeyDown = true;
 	}
@@ -264,14 +274,78 @@ void EntityScenePuzzle::OnPostRender()
 
 void EntityScenePuzzle::UpdateCellState()
 {
+	// カーソル位置および十字方向にもっとも近いセルを検索
 	ActalogicCell *pCurrentCell = nullptr;
+	ActalogicCell *pRightCell = nullptr;
+	ActalogicCell *pLeftCell = nullptr;
+	ActalogicCell *pUpCell = nullptr;
+	ActalogicCell *pDownCell = nullptr;
 	{
 		for (ActalogicCell *pCell : m_cells)
 		{
 			POINT pt = pCell->GetPosition();
-			if (pt.x == m_currentCursor.x && pt.y == m_currentCursor.y)
+			if (pt.x == m_currentCursor.x)
 			{
-				pCurrentCell = pCell;
+				if (pt.y == m_currentCursor.y)
+				{
+					// カーソル位置のセル
+					pCurrentCell = pCell;
+				}
+				else if (pt.y > m_currentCursor.y)
+				{
+					// 下方向のセル
+					if (pDownCell == nullptr)
+					{
+						pDownCell = pCell;
+					}
+					else if (pDownCell->GetPosition().y > pt.y)
+					{
+						pDownCell = pCell;
+					}
+				}
+				else
+				{
+					// 上方向のセル
+					if (pUpCell == nullptr)
+					{
+						pUpCell = pCell;
+					}
+					else if (pUpCell->GetPosition().y < pt.y)
+					{
+						pUpCell = pCell;
+					}
+				}
+			}
+			else if (pt.y == m_currentCursor.y)
+			{
+				if (pt.x == m_currentCursor.x)
+				{
+					assert(false);
+				}
+				else if (pt.x > m_currentCursor.x)
+				{
+					// 右方向のセル
+					if (pRightCell == nullptr)
+					{
+						pRightCell = pCell;
+					}
+					else if (pRightCell->GetPosition().x > pt.x)
+					{
+						pRightCell = pCell;
+					}
+				}
+				else
+				{
+					// 左方向のセル
+					if (pLeftCell == nullptr)
+					{
+						pLeftCell = pCell;
+					}
+					else if (pLeftCell->GetPosition().x < pt.x)
+					{
+						pLeftCell = pCell;
+					}
+				}
 			}
 		}
 	}
