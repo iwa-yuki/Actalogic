@@ -34,5 +34,6 @@ private:
 
 private:
 	void UpdateCellState();
+	bool CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2);
 };
 

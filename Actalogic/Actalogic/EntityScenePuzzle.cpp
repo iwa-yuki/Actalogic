@@ -189,9 +189,10 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + i*30.0F, 0.0F), D2D1::Point2F(100.0F + i*30.0F, targetSize.height), m_pSolidBrush);
 	}
 
-	// ƒZƒ‹‚ð•`‰æ
+	// ƒZƒ‹EƒŠƒ“ƒN‚ð•`‰æ
 	for (ActalogicCell* pCell : m_cells)
 	{
+		// ƒZƒ‹‚ð•`‰æ
 		switch (pCell->GetType())
 		{
 		case ActalogicCellType::CELL_BUFFER:
@@ -256,6 +257,33 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		default:
 			break;
+		}
+
+		// ƒŠƒ“ƒN‚ð•`‰æ
+		m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
+		{
+			POINT pt = pCell->GetPosition();
+			int linkToRight = pCell->GetDistanceToLink(ActalogicCellDirection::RIGHT);
+			int linkToLeft = pCell->GetDistanceToLink(ActalogicCellDirection::LEFT);
+			int linkToUp = pCell->GetDistanceToLink(ActalogicCellDirection::UP);
+			int linkToDown = pCell->GetDistanceToLink(ActalogicCellDirection::DOWN);
+
+			if (linkToRight > 0)
+			{
+				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F + linkToRight*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 1.0F);
+			}
+			if (linkToLeft > 0)
+			{
+				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F - linkToLeft*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 1.0F);
+			}
+			if (linkToDown > 0)
+			{
+				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F + linkToDown*30.0F), m_pSolidBrush, 1.0F);
+			}
+			if (linkToUp > 0)
+			{
+				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F - linkToUp*30.0F), m_pSolidBrush, 1.0F);
+			}
 		}
 	}
 
@@ -350,11 +378,228 @@ void EntityScenePuzzle::UpdateCellState()
 		}
 	}
 
-	if (pCurrentCell == nullptr)
+	//‘ŠŒÝƒŠƒ“ƒN¶¬
+	if (pCurrentCell != nullptr)
 	{
-		for (ActalogicCell *pCell : m_cells)
+		if (pRightCell != nullptr)
 		{
-			POINT pt = pCell->GetPosition();
+			if (CanLink(pCurrentCell, pRightCell))
+			{
+				pCurrentCell->SetLink(ActalogicCellDirection::RIGHT, pRightCell);
+				pRightCell->SetLink(ActalogicCellDirection::LEFT, pCurrentCell);
+			}
+			else
+			{
+				pCurrentCell->ClearLink(ActalogicCellDirection::RIGHT);
+				pRightCell->ClearLink(ActalogicCellDirection::LEFT);
+			}
+		}
+		else
+		{
+			pCurrentCell->ClearLink(ActalogicCellDirection::RIGHT);
+		}
+
+		if (pLeftCell != nullptr)
+		{
+			if (CanLink(pCurrentCell, pLeftCell))
+			{
+				pCurrentCell->SetLink(ActalogicCellDirection::LEFT, pLeftCell);
+				pLeftCell->SetLink(ActalogicCellDirection::RIGHT, pCurrentCell);
+			}
+			else
+			{
+				pCurrentCell->ClearLink(ActalogicCellDirection::LEFT);
+				pLeftCell->ClearLink(ActalogicCellDirection::RIGHT);
+			}
+		}
+		else
+		{
+			pCurrentCell->ClearLink(ActalogicCellDirection::LEFT);
+		}
+
+		if (pUpCell != nullptr)
+		{
+			if (CanLink(pCurrentCell, pUpCell))
+			{
+				pCurrentCell->SetLink(ActalogicCellDirection::UP, pUpCell);
+				pUpCell->SetLink(ActalogicCellDirection::DOWN, pCurrentCell);
+			}
+			else
+			{
+				pCurrentCell->ClearLink(ActalogicCellDirection::UP);
+				pUpCell->ClearLink(ActalogicCellDirection::DOWN);
+			}
+		}
+		else
+		{
+			pCurrentCell->ClearLink(ActalogicCellDirection::UP);
+		}
+
+		if (pDownCell != nullptr)
+		{
+			if (CanLink(pCurrentCell, pDownCell))
+			{
+				pCurrentCell->SetLink(ActalogicCellDirection::DOWN, pDownCell);
+				pDownCell->SetLink(ActalogicCellDirection::UP, pCurrentCell);
+			}
+			else
+			{
+				pCurrentCell->ClearLink(ActalogicCellDirection::DOWN);
+				pDownCell->ClearLink(ActalogicCellDirection::UP);
+			}
+		}
+		else
+		{
+			pCurrentCell->ClearLink(ActalogicCellDirection::DOWN);
 		}
 	}
+	else
+	{
+		if (pRightCell != nullptr)
+		{
+			if (pLeftCell != nullptr)
+			{
+				if (CanLink(pRightCell, pLeftCell))
+				{
+					pRightCell->SetLink(ActalogicCellDirection::LEFT, pLeftCell);
+					pLeftCell->SetLink(ActalogicCellDirection::RIGHT, pRightCell);
+				}
+				else
+				{
+					pRightCell->ClearLink(ActalogicCellDirection::LEFT);
+					pLeftCell->ClearLink(ActalogicCellDirection::RIGHT);
+				}
+			}
+			else
+			{
+				pRightCell->ClearLink(ActalogicCellDirection::LEFT);
+			}
+		}
+		else
+		{
+			if (pLeftCell != nullptr)
+			{
+				pLeftCell->ClearLink(ActalogicCellDirection::RIGHT);
+			}
+		}
+
+		if (pUpCell != nullptr)
+		{
+			if (pDownCell != nullptr)
+			{
+				if (CanLink(pUpCell, pDownCell))
+				{
+					pUpCell->SetLink(ActalogicCellDirection::DOWN, pDownCell);
+					pDownCell->SetLink(ActalogicCellDirection::UP, pUpCell);
+				}
+				else
+				{
+					pUpCell->ClearLink(ActalogicCellDirection::DOWN);
+					pDownCell->ClearLink(ActalogicCellDirection::UP);
+				}
+			}
+			else
+			{
+				pUpCell->ClearLink(ActalogicCellDirection::DOWN);
+			}
+		}
+		else
+		{
+			if (pDownCell != nullptr)
+			{
+				pDownCell->ClearLink(ActalogicCellDirection::UP);
+			}
+		}
+	}
+}
+
+bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
+{
+	if (pCell1 == nullptr || pCell2 == nullptr)
+	{
+		return false;
+	}
+
+	POINT pt1 = pCell1->GetPosition();
+	POINT pt2 = pCell2->GetPosition();
+	ActalogicCellType type1 = pCell1->GetType();
+	ActalogicCellType type2 = pCell2->GetType();
+
+	if (type1 == ActalogicCellType::WIRE_UP)
+	{
+		if ((pt1.x == pt2.x) && (pt1.y == pt2.y - 1 || pt1.y > pt2.y))
+		{
+			if (type2 == ActalogicCellType::CELL_BUFFER || type2 == ActalogicCellType::CELL_NAND || type2 == ActalogicCellType::CELL_NOR)
+			{
+				return true;
+			}
+		}
+	}
+	else if (type1 == ActalogicCellType::WIRE_DOWN)
+	{
+		if ((pt1.x == pt2.x) && (pt1.y == pt2.y + 1 || pt1.y < pt2.y))
+		{
+			if (type2 == ActalogicCellType::CELL_BUFFER || type2 == ActalogicCellType::CELL_NAND || type2 == ActalogicCellType::CELL_NOR)
+			{
+				return true;
+			}
+		}
+	}
+	else if (type1 == ActalogicCellType::WIRE_LEFT)
+	{
+		if ((pt1.y == pt2.y) && (pt1.x == pt2.x - 1 || pt1.x > pt2.x))
+		{
+			if (type2 == ActalogicCellType::CELL_BUFFER || type2 == ActalogicCellType::CELL_NAND || type2 == ActalogicCellType::CELL_NOR)
+			{
+				return true;
+			}
+		}
+	}
+	else if (type1 == ActalogicCellType::WIRE_RIGHT)
+	{
+		if ((pt1.y == pt2.y) && (pt1.x == pt2.x + 1 || pt1.x < pt2.x))
+		{
+			if (type2 == ActalogicCellType::CELL_BUFFER || type2 == ActalogicCellType::CELL_NAND || type2 == ActalogicCellType::CELL_NOR)
+			{
+				return true;
+			}
+		}
+	}
+	else if (type1 == ActalogicCellType::CELL_BUFFER || type1 == ActalogicCellType::CELL_NAND || type1 == ActalogicCellType::CELL_NOR)
+	{
+		if (type2 == ActalogicCellType::WIRE_UP)
+		{
+			if ((pt1.x == pt2.x) && (pt1.y == pt2.y + 1 || pt1.y < pt2.y))
+			{
+				return true;
+			}
+		}
+		else if (type2 == ActalogicCellType::WIRE_DOWN)
+		{
+			if ((pt1.x == pt2.x) && (pt1.y == pt2.y - 1 || pt1.y > pt2.y))
+			{
+				return true;
+			}
+		}
+		else if (type2 == ActalogicCellType::WIRE_LEFT)
+		{
+			if ((pt1.y == pt2.y) && (pt1.x == pt2.x + 1 || pt1.x < pt2.x))
+			{
+				return true;
+			}
+		}
+		else if (type2 == ActalogicCellType::WIRE_RIGHT)
+		{
+			if ((pt1.y == pt2.y) && (pt1.x == pt2.x - 1 || pt1.x > pt2.x))
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		assert(false);
+	}
+
+	return false;
 }

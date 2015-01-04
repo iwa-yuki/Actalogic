@@ -39,6 +39,12 @@ void ActalogicCell::SetPosition(const POINT &pt)
 
 void ActalogicCell::SetLink(ActalogicCellDirection dir, ActalogicCell *pCell)
 {
+	if (pCell == nullptr)
+	{
+		ClearLink(dir);
+		return;
+	}
+
 	switch (dir)
 	{
 	case ActalogicCellDirection::RIGHT:
