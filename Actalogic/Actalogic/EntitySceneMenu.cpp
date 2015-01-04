@@ -3,17 +3,14 @@
 #include "ActalogicApp.h"
 
 EntitySceneMenu::EntitySceneMenu() :
-m_pBitmapBackground(nullptr),
-m_cursor(0),
-m_keyInputCounter(0),
-m_pContainer(nullptr)
+EntitySceneMenu(nullptr)
 {
 }
 
 EntitySceneMenu::EntitySceneMenu(EntitySceneContainer *pContainer) :
 m_pBitmapBackground(nullptr),
 m_cursor(0),
-m_keyInputCounter(0),
+m_keyInputCounter(1),
 m_pContainer(pContainer)
 {
 }

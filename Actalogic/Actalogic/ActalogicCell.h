@@ -6,6 +6,8 @@ enum ActalogicCellType : int
 	CELL_BUFFER,
 	CELL_NOR,
 	CELL_NAND,
+	CELL_INPUT,
+	CELL_OUTPUT,
 	WIRE_UP,
 	WIRE_DOWN,
 	WIRE_RIGHT,

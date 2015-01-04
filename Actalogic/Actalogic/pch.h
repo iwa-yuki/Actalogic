@@ -1,15 +1,18 @@
 #pragma once
 
+#define _CRTDBG_MAP_ALLOC
+
 #include <windows.h>
 #include <stdlib.h>
+#include <crtdbg.h>
 #include <string.h>
 #include <tchar.h>
 #include <math.h>
 #include <string.h>
 #include <assert.h>
 
-#include <d2d1.h>
-#include <dwrite.h>
+#include <d2d1_1.h>
+#include <dwrite_1.h>
 #include <wincodec.h>
 
 #include <chrono>

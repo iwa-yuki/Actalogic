@@ -60,6 +60,9 @@ public:
 	// ‹éŒ`‚ð•`‰æ
 	void DrawRectangle(const D2D1_RECT_F &rc, ID2D1Brush *pBrush, FLOAT width = 1.0F);
 
+	// ‘È‰~‚ð•`‰æ
+	void DrawEllipse(const D2D1_ELLIPSE &ellipse, ID2D1Brush *pBrush, FLOAT width);
+
 private:
 	ID2D1Factory* m_pDirect2dFactory;
 	IDWriteFactory* m_pDWriteFactory;

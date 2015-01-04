@@ -12,6 +12,8 @@ class ActalogicApp;
 class EntitySceneContainer :
 	public Entity
 {
+	friend class EntityDebugInfoLayer;
+
 public:
 	EntitySceneContainer();
 	EntitySceneContainer(ActalogicApp *pApp);
