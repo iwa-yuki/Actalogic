@@ -27,7 +27,8 @@ class ActalogicCell
 public:
 	ActalogicCell();
 	ActalogicCell(const POINT &pt,
-		ActalogicCellType type = ActalogicCellType::CELL_BUFFER);
+		ActalogicCellType type = ActalogicCellType::CELL_BUFFER,
+		bool removable = false);
 	virtual ~ActalogicCell();
 
 	ActalogicCellType GetType();
@@ -36,10 +37,12 @@ public:
 	void SetLink(ActalogicCellDirection dir, ActalogicCell *pCell);
 	void ClearLink(ActalogicCellDirection dir);
 	int GetDistanceToLink(ActalogicCellDirection dir);
+	bool IsRemovable();
 
 private:
 	ActalogicCellType m_type;
 	POINT m_position;
+	bool m_isRemovable;
 
 	ActalogicCell* m_pLinkedCells[4];
 };

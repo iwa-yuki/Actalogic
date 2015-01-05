@@ -207,6 +207,11 @@ void D2D1Manager::DrawRectangle(const D2D1_RECT_F &rc, ID2D1Brush *pBrush, FLOAT
 	m_pRenderTarget->DrawRectangle(rc, pBrush, width);
 }
 
+void D2D1Manager::FillRectangle(const D2D1_RECT_F &rc, ID2D1Brush *pBrush)
+{
+	m_pRenderTarget->FillRectangle(rc, pBrush);
+}
+
 void D2D1Manager::DrawEllipse(const D2D1_ELLIPSE &ellipse, ID2D1Brush *pBrush, FLOAT width)
 {
 	m_pRenderTarget->DrawEllipse(ellipse, pBrush, width);

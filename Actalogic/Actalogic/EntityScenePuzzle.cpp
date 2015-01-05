@@ -17,11 +17,11 @@ m_keyInputCounter(1),
 m_cells(),
 m_stackedCell(nullptr)
 {
-	m_cells.push_back(new ActalogicCell({ 0, 0 }, ActalogicCellType::CELL_BUFFER));
-	m_cells.push_back(new ActalogicCell({ 0, 1 }, ActalogicCellType::CELL_NAND));
-	m_cells.push_back(new ActalogicCell({ 0, 2 }, ActalogicCellType::CELL_NOR));
-	m_cells.push_back(new ActalogicCell({ 0, 3 }, ActalogicCellType::CELL_INPUT));
-	m_cells.push_back(new ActalogicCell({ 0, 4 }, ActalogicCellType::CELL_OUTPUT));
+	m_cells.push_back(new ActalogicCell({ 0, 0 }, ActalogicCellType::CELL_BUFFER, true));
+	m_cells.push_back(new ActalogicCell({ 0, 1 }, ActalogicCellType::CELL_NAND, true));
+	m_cells.push_back(new ActalogicCell({ 0, 2 }, ActalogicCellType::CELL_NOR, true));
+	m_cells.push_back(new ActalogicCell({ 0, 3 }, ActalogicCellType::CELL_INPUT, true));
+	m_cells.push_back(new ActalogicCell({ 0, 4 }, ActalogicCellType::CELL_OUTPUT, true));
 
 	m_cells.push_back(new ActalogicCell({ 0, 5 }, ActalogicCellType::WIRE_UP));
 	m_cells.push_back(new ActalogicCell({ 1, 5 }, ActalogicCellType::WIRE_DOWN));
@@ -140,8 +140,8 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 				}
 			}
 
-			// カーソル位置のセルを削除
-			if (pTmpCell != nullptr)
+			// 移動可能なセルの場合、カーソル位置のセルを削除
+			if (pTmpCell != nullptr && pTmpCell->IsRemovable())
 			{
 				m_cells.remove(pTmpCell);
 				UpdateCellState();
@@ -151,14 +151,17 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 				pTmpCell->ClearLink(ActalogicCellDirection::LEFT);
 			}
 
-			// m_stackedCellにセルが保存されていたらカーソル位置のセルと入れ替える
-			if (m_stackedCell != nullptr)
+			if ((pTmpCell == nullptr) || (pTmpCell != nullptr && pTmpCell->IsRemovable()))
 			{
-				m_stackedCell->SetPosition(m_currentCursor);
-				m_cells.push_back(m_stackedCell);
-				UpdateCellState();
+				// m_stackedCellにセルが保存されていたらカーソル位置のセルと入れ替える
+				if (m_stackedCell != nullptr)
+				{
+					m_stackedCell->SetPosition(m_currentCursor);
+					m_cells.push_back(m_stackedCell);
+					UpdateCellState();
+				}
+				m_stackedCell = pTmpCell;
 			}
-			m_stackedCell = pTmpCell;
 		}
 		isKeyDown = true;
 	}
@@ -194,12 +197,18 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 	// セル・リンクを描画
 	for (ActalogicCell* pCell : m_cells)
 	{
+		POINT pt = pCell->GetPosition();
+		if (!pCell->IsRemovable())
+		{
+			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Gainsboro));
+			pD2D1Manager->FillRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 1.0F, pt.y*30.0F + 1.0F,
+				100.0F + (pt.x + 1) * 30.0F - 1.0F, (pt.y + 1)*30.0F - 1.0F), m_pSolidBrush);
+		}
 		// セルを描画
 		switch (pCell->GetType())
 		{
 		case ActalogicCellType::CELL_BUFFER:
 		{
-			POINT pt = pCell->GetPosition();
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
@@ -207,7 +216,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_NAND:
 		{
-			POINT pt = pCell->GetPosition();
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Red));
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
@@ -216,7 +224,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_NOR:
 		{
-			POINT pt = pCell->GetPosition();
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
@@ -228,7 +235,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_INPUT:
 		{
-			POINT pt = pCell->GetPosition();
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Purple));
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
@@ -244,7 +250,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_OUTPUT:
 		{
-			POINT pt = pCell->GetPosition();
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
@@ -260,7 +265,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::WIRE_UP:
 		{
-			POINT pt = pCell->GetPosition();
 			int linkToUp = pCell->GetDistanceToLink(ActalogicCellDirection::UP);
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 28.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
@@ -274,7 +278,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::WIRE_DOWN:
 		{
-			POINT pt = pCell->GetPosition();
 			int linkToDown = pCell->GetDistanceToLink(ActalogicCellDirection::DOWN);
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 2.0F), m_pSolidBrush, 2.0F);
@@ -288,7 +291,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::WIRE_RIGHT:
 		{
-			POINT pt = pCell->GetPosition();
 			int linkToRight = pCell->GetDistanceToLink(ActalogicCellDirection::RIGHT);
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
@@ -302,7 +304,6 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::WIRE_LEFT:
 		{
-			POINT pt = pCell->GetPosition();
 			int linkToLeft = pCell->GetDistanceToLink(ActalogicCellDirection::LEFT);
 			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 2.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);

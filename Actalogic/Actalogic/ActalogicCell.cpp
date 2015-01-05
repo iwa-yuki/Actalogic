@@ -7,9 +7,10 @@ ActalogicCell({ 0, 0 })
 }
 
 ActalogicCell::ActalogicCell(const POINT &pt,
-	ActalogicCellType type) :
+	ActalogicCellType type, bool removable) :
 m_type(type),
-m_position(pt)
+m_position(pt),
+m_isRemovable(removable)
 {
 	m_pLinkedCells[ActalogicCellDirection::RIGHT] = nullptr;
 	m_pLinkedCells[ActalogicCellDirection::DOWN] = nullptr;
@@ -102,3 +103,9 @@ int ActalogicCell::GetDistanceToLink(ActalogicCellDirection dir)
 
 	return 0;
 }
+
+bool ActalogicCell::IsRemovable()
+{
+	return m_isRemovable;
+}
+
