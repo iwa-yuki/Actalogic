@@ -174,6 +174,12 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 	{
 		m_keyInputCounter = 0;
 	}
+
+	// ƒZƒ‹‚Ì‘Oˆ—
+	for (ActalogicCell* pCell : m_cells)
+	{
+		pCell->OnPreRender(pInputHelper);
+	}
 }
 
 void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
@@ -328,7 +334,11 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 
 void EntityScenePuzzle::OnPostRender()
 {
-
+	// ƒZƒ‹‚ÌŒãˆ—
+	for (ActalogicCell* pCell : m_cells)
+	{
+		pCell->OnPostRender();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////

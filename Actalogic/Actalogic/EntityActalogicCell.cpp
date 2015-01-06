@@ -22,6 +22,47 @@ ActalogicCell::~ActalogicCell()
 {
 }
 
+void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
+{
+	switch (m_type)
+	{
+	case CELL_BUFFER:
+		break;
+	case CELL_NOR:
+		break;
+	case CELL_NAND:
+		break;
+	case CELL_INPUT:
+		break;
+	case CELL_OUTPUT:
+		break;
+	case WIRE_UP:
+		m_postValue = m_pLinkedCells[ActalogicCellDirection::DOWN] == nullptr ? 0 :
+			m_pLinkedCells[ActalogicCellDirection::DOWN]->GetValue();
+		break;
+	case WIRE_DOWN:
+		m_postValue = m_pLinkedCells[ActalogicCellDirection::UP] == nullptr ? 0 :
+			m_pLinkedCells[ActalogicCellDirection::UP]->GetValue();
+		break;
+	case WIRE_RIGHT:
+		m_postValue = m_pLinkedCells[ActalogicCellDirection::LEFT] == nullptr ? 0 :
+			m_pLinkedCells[ActalogicCellDirection::LEFT]->GetValue();
+		break;
+	case WIRE_LEFT:
+		m_postValue = m_pLinkedCells[ActalogicCellDirection::RIGHT] == nullptr ? 0 :
+			m_pLinkedCells[ActalogicCellDirection::RIGHT]->GetValue();
+		break;
+	default:
+		assert(false);
+		break;
+	}
+}
+
+void ActalogicCell::OnPostRender()
+{
+	m_currentValue = m_postValue;
+}
+
 
 ActalogicCellType ActalogicCell::GetType()
 {
@@ -109,3 +150,7 @@ bool ActalogicCell::IsRemovable()
 	return m_isRemovable;
 }
 
+int ActalogicCell::GetValue()
+{
+	return m_currentValue;
+}

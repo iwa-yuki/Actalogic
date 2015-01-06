@@ -32,6 +32,9 @@ public:
 		bool removable = false);
 	virtual ~ActalogicCell();
 
+	void OnPreRender(InputHelper *pInputHelper);
+	void OnPostRender();
+
 	ActalogicCellType GetType();
 	POINT GetPosition();
 	void SetPosition(const POINT &pt);
@@ -39,11 +42,15 @@ public:
 	void ClearLink(ActalogicCellDirection dir);
 	int GetDistanceToLink(ActalogicCellDirection dir);
 	bool IsRemovable();
+	int GetValue();
 
 private:
 	ActalogicCellType m_type;
 	POINT m_position;
 	bool m_isRemovable;
+
+	int m_currentValue;
+	int m_postValue;
 
 	ActalogicCell* m_pLinkedCells[4];
 };
