@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EntityScenePuzzle.h"
 #include "EntitySceneContainer.h"
-#include "ActalogicCell.h"
+#include "EntityActalogicCell.h"
 
 EntityScenePuzzle::EntityScenePuzzle() :
 EntityScenePuzzle(nullptr)
@@ -23,10 +23,10 @@ m_stackedCell(nullptr)
 	m_cells.push_back(new ActalogicCell({ 0, 3 }, ActalogicCellType::CELL_INPUT, true));
 	m_cells.push_back(new ActalogicCell({ 0, 4 }, ActalogicCellType::CELL_OUTPUT, true));
 
-	m_cells.push_back(new ActalogicCell({ 0, 5 }, ActalogicCellType::WIRE_UP));
-	m_cells.push_back(new ActalogicCell({ 1, 5 }, ActalogicCellType::WIRE_DOWN));
-	m_cells.push_back(new ActalogicCell({ 2, 5 }, ActalogicCellType::WIRE_RIGHT));
-	m_cells.push_back(new ActalogicCell({ 3, 5 }, ActalogicCellType::WIRE_LEFT));
+	m_cells.push_back(new ActalogicCell({ 0, 5 }, ActalogicCellType::WIRE_UP, true));
+	m_cells.push_back(new ActalogicCell({ 1, 5 }, ActalogicCellType::WIRE_DOWN, true));
+	m_cells.push_back(new ActalogicCell({ 2, 5 }, ActalogicCellType::WIRE_RIGHT, true));
+	m_cells.push_back(new ActalogicCell({ 3, 5 }, ActalogicCellType::WIRE_LEFT, true));
 }
 
 

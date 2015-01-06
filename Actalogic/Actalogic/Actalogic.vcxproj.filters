@@ -51,7 +51,7 @@
     <ClCompile Include="EntitySceneCreative.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ActalogicCell.cpp">
+    <ClCompile Include="EntityActalogicCell.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClInclude Include="EntitySceneCreative.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ActalogicCell.h">
+    <ClInclude Include="EntityActalogicCell.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

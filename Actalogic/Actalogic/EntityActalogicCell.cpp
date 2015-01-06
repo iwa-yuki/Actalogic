@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ActalogicCell.h"
+#include "EntityActalogicCell.h"
 
 ActalogicCell::ActalogicCell() : 
 ActalogicCell({ 0, 0 })

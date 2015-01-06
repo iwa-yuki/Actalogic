@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Entity.h"
-#include "ActalogicCell.h"
+#include "EntityActalogicCell.h"
 
 class EntitySceneContainer;
 

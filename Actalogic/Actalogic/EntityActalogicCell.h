@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "Entity.h"
 
 enum ActalogicCellType : int
 {
@@ -22,7 +23,7 @@ enum ActalogicCellDirection : int
 	UP = 3,
 };
 
-class ActalogicCell
+class ActalogicCell : Entity
 {
 public:
 	ActalogicCell();
