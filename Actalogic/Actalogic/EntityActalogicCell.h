@@ -52,6 +52,8 @@ private:
 	int m_currentValue;
 	int m_postValue;
 
+	int m_count;
+
 	ActalogicCell* m_pLinkedCells[4];
 };
 

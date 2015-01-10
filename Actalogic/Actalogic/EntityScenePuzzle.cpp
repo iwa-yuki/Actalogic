@@ -190,7 +190,7 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 	//	D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, D2D1::RectF(0.0F, 0.0F, targetSize.width, targetSize.height));
 
 	// Œrü‚ð•`‰æ
-	m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Gray));
+	m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::LightGray));
 	for (int i = 0; i <= 20; ++i)
 	{
 		pD2D1Manager->DrawLine(D2D1::Point2F(100.0F, i*30.0F), D2D1::Point2F(targetSize.width - 100.0F, i*30.0F), m_pSolidBrush);
@@ -215,14 +215,36 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		{
 		case ActalogicCellType::CELL_BUFFER:
 		{
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
 			break;
 		}
 		case ActalogicCellType::CELL_NAND:
 		{
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Red));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), 2.0F, 2.0F), m_pSolidBrush, 3.0F);
@@ -230,7 +252,18 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_NOR:
 		{
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 6.0F, pt.y*30.0F + 15.0F),
@@ -241,7 +274,18 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_INPUT:
 		{
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Purple));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 6.0F),
@@ -256,7 +300,18 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		}
 		case ActalogicCellType::CELL_OUTPUT:
 		{
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawRectangle(D2D1::RectF(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F,
 				100.0F + (pt.x + 1) * 30.0F - 2.0F, (pt.y + 1)*30.0F - 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 6.0F),

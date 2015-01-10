@@ -10,7 +10,8 @@ ActalogicCell::ActalogicCell(const POINT &pt,
 	ActalogicCellType type, bool removable) :
 m_type(type),
 m_position(pt),
-m_isRemovable(removable)
+m_isRemovable(removable),
+m_count(0)
 {
 	m_pLinkedCells[ActalogicCellDirection::RIGHT] = nullptr;
 	m_pLinkedCells[ActalogicCellDirection::DOWN] = nullptr;
@@ -33,6 +34,7 @@ void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
 	case CELL_NAND:
 		break;
 	case CELL_INPUT:
+		m_postValue = (m_count / 60) % 2 == 1 ? 1 : -1;
 		break;
 	case CELL_OUTPUT:
 		break;
@@ -56,6 +58,7 @@ void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
 		assert(false);
 		break;
 	}
+	++m_count;
 }
 
 void ActalogicCell::OnPostRender()
