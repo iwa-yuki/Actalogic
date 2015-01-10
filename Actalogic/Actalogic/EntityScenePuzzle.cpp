@@ -570,7 +570,7 @@ bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
 
 	if (type1 == ActalogicCellType::WIRE_UP)
 	{
-		if ((pt1.x == pt2.x) && (pt1.y == pt2.y - 1 || pt1.y > pt2.y))
+		if ((pt1.x == pt2.x) && (pt1.y == pt2.y - 1 || (pt1.y > pt2.y && pt1.y < pt2.y + 16)))
 		{
 			if (type2 == ActalogicCellType::CELL_BUFFER ||
 				type2 == ActalogicCellType::CELL_NAND ||
@@ -584,7 +584,7 @@ bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
 	}
 	else if (type1 == ActalogicCellType::WIRE_DOWN)
 	{
-		if ((pt1.x == pt2.x) && (pt1.y == pt2.y + 1 || pt1.y < pt2.y))
+		if ((pt1.x == pt2.x) && (pt1.y == pt2.y + 1 || (pt1.y < pt2.y && pt1.y > pt2.y - 16)))
 		{
 			if (type2 == ActalogicCellType::CELL_BUFFER ||
 				type2 == ActalogicCellType::CELL_NAND ||
@@ -598,7 +598,7 @@ bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
 	}
 	else if (type1 == ActalogicCellType::WIRE_LEFT)
 	{
-		if ((pt1.y == pt2.y) && (pt1.x == pt2.x - 1 || pt1.x > pt2.x))
+		if ((pt1.y == pt2.y) && (pt1.x == pt2.x - 1 || (pt1.x > pt2.x && pt1.x < pt2.x + 16)))
 		{
 			if (type2 == ActalogicCellType::CELL_BUFFER ||
 				type2 == ActalogicCellType::CELL_NAND ||
@@ -612,7 +612,7 @@ bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
 	}
 	else if (type1 == ActalogicCellType::WIRE_RIGHT)
 	{
-		if ((pt1.y == pt2.y) && (pt1.x == pt2.x + 1 || pt1.x < pt2.x))
+		if ((pt1.y == pt2.y) && (pt1.x == pt2.x + 1 || (pt1.x < pt2.x && pt1.x > pt2.x - 16)))
 		{
 			if (type2 == ActalogicCellType::CELL_BUFFER ||
 				type2 == ActalogicCellType::CELL_NAND ||
@@ -628,28 +628,28 @@ bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
 	{
 		if (type2 == ActalogicCellType::WIRE_UP)
 		{
-			if ((pt1.x == pt2.x) && (pt1.y == pt2.y + 1 || pt1.y < pt2.y))
+			if ((pt1.x == pt2.x) && (pt1.y == pt2.y + 1 || (pt1.y < pt2.y && pt1.y > pt2.y -16)))
 			{
 				return true;
 			}
 		}
 		else if (type2 == ActalogicCellType::WIRE_DOWN)
 		{
-			if ((pt1.x == pt2.x) && (pt1.y == pt2.y - 1 || pt1.y > pt2.y))
+			if ((pt1.x == pt2.x) && (pt1.y == pt2.y - 1 || (pt1.y > pt2.y && pt1.y < pt2.y +16)))
 			{
 				return true;
 			}
 		}
 		else if (type2 == ActalogicCellType::WIRE_LEFT)
 		{
-			if ((pt1.y == pt2.y) && (pt1.x == pt2.x + 1 || pt1.x < pt2.x))
+			if ((pt1.y == pt2.y) && (pt1.x == pt2.x + 1 || (pt1.x < pt2.x && pt1.x > pt2.x -16)))
 			{
 				return true;
 			}
 		}
 		else if (type2 == ActalogicCellType::WIRE_RIGHT)
 		{
-			if ((pt1.y == pt2.y) && (pt1.x == pt2.x - 1 || pt1.x > pt2.x))
+			if ((pt1.y == pt2.y) && (pt1.x == pt2.x - 1 || (pt1.x > pt2.x && pt1.x < pt2.x +16)))
 			{
 				return true;
 			}
