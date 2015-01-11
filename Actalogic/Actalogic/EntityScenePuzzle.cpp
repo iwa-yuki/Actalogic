@@ -129,16 +129,7 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 		if (m_keyInputCounter == 0)
 		{
 			// カーソル位置にセルがあるか検索
-			ActalogicCell *pTmpCell = nullptr;
-			for (ActalogicCell *pCell : m_cells)
-			{
-				POINT pt = pCell->GetPosition();
-				if (pt.x == m_currentCursor.x && pt.y == m_currentCursor.y)
-				{
-					pTmpCell = pCell;
-					break;
-				}
-			}
+			ActalogicCell *pTmpCell = GetCurrentCell();
 
 			// 移動可能なセルの場合、カーソル位置のセルを削除
 			if (pTmpCell != nullptr && pTmpCell->IsRemovable())
@@ -394,6 +385,22 @@ void EntityScenePuzzle::OnPostRender()
 	{
 		pCell->OnPostRender();
 	}
+}
+
+ActalogicCell* EntityScenePuzzle::GetCurrentCell()
+{
+	ActalogicCell *pTmpCell = nullptr;
+	for (ActalogicCell *pCell : m_cells)
+	{
+		POINT pt = pCell->GetPosition();
+		if (pt.x == m_currentCursor.x && pt.y == m_currentCursor.y)
+		{
+			pTmpCell = pCell;
+			break;
+		}
+	}
+
+	return pTmpCell;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

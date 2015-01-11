@@ -42,7 +42,7 @@ public:
 	void ClearLink(ActalogicCellDirection dir);
 	int GetDistanceToLink(ActalogicCellDirection dir);
 	bool IsRemovable();
-	int GetValue();
+	int GetValue(int index = 0);
 
 private:
 	ActalogicCellType m_type;
@@ -51,6 +51,7 @@ private:
 
 	int m_currentValue;
 	int m_postValue;
+	std::deque<int> m_prevValue;
 
 	int m_count;
 

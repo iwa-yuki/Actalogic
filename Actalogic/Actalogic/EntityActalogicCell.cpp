@@ -17,6 +17,8 @@ m_count(0)
 	m_pLinkedCells[ActalogicCellDirection::DOWN] = nullptr;
 	m_pLinkedCells[ActalogicCellDirection::LEFT] = nullptr;
 	m_pLinkedCells[ActalogicCellDirection::UP] = nullptr;
+
+	m_prevValue.assign(16, 0);
 }
 
 ActalogicCell::~ActalogicCell()
@@ -63,6 +65,11 @@ void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
 
 void ActalogicCell::OnPostRender()
 {
+	m_prevValue.push_front(m_currentValue);
+	while (m_prevValue.size() > 16)
+	{
+		m_prevValue.pop_back();
+	}
 	m_currentValue = m_postValue;
 }
 
@@ -153,7 +160,11 @@ bool ActalogicCell::IsRemovable()
 	return m_isRemovable;
 }
 
-int ActalogicCell::GetValue()
+int ActalogicCell::GetValue(int index)
 {
-	return m_currentValue;
+	if (index == 0)
+	{
+		return m_currentValue;
+	}
+	return m_prevValue.at(index - 1);
 }

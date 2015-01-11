@@ -22,6 +22,8 @@ public:
 	void OnRender(D2D1Manager *pD2D1Manager);
 	void OnPostRender();
 
+	ActalogicCell* GetCurrentCell();
+
 private:
 	EntitySceneContainer *m_pContainer;
 	ID2D1Bitmap *m_pBitmapBackground;

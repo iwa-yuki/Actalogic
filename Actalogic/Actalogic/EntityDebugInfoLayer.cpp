@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "EntityDebugInfoLayer.h"
 #include "ActalogicApp.h"
+#include "EntityActalogicCell.h"
+#include "EntitySceneContainer.h"
 
 EntityDebugInfoLayer::EntityDebugInfoLayer():
 m_pDWTextFormat(nullptr),
@@ -65,6 +67,21 @@ void EntityDebugInfoLayer::OnRender(D2D1Manager *pD2D1Manager)
 	
 	pD2D1Manager->DrawText(c, nc,
 		m_pDWTextFormat, D2D1::RectF(0, 0, targetSize.width, targetSize.height), m_pTextBrush);
+
+	if (m_theApp->m_entitySceneContainer.m_scene == EntityScene::PUZZLE)
+	{
+		ActalogicCell *pCell = (m_theApp->m_entitySceneContainer).m_entityPuzzle.GetCurrentCell();
+		if (pCell == nullptr)
+		{
+			nc = _stprintf_s(c, 1024, _T("\n\n\nCurrentCell = null"));
+		}
+		else
+		{
+			nc = _stprintf_s(c, 1024, _T("\n\n\nCurrentCell = [%d, %d]"), pCell->GetType(), pCell->GetValue());
+		}
+		pD2D1Manager->DrawText(c, nc,
+			m_pDWTextFormat, D2D1::RectF(0, 0, targetSize.width, targetSize.height), m_pTextBrush);
+	}
 }
 
 void EntityDebugInfoLayer::SetApp(ActalogicApp *pApp)

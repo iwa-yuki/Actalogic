@@ -6,7 +6,14 @@
 #include "EntitySceneCreative.h"
 #include "InputHelper.h"
 
-enum EntityScene : long;
+enum EntityScene : long
+{
+	MENU,
+	PUZZLE,
+	CREATIVE,
+	CONFIG,
+};
+
 class ActalogicApp;
 
 class EntitySceneContainer :

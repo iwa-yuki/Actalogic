@@ -17,6 +17,7 @@
 
 #include <chrono>
 #include <unordered_map>
+#include <deque>
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")

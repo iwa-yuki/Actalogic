@@ -2,15 +2,6 @@
 #include "EntitySceneContainer.h"
 #include "ActalogicApp.h"
 
-
-enum EntityScene : long
-{
-	MENU,
-	PUZZLE,
-	CREATIVE,
-	CONFIG,
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 
 EntitySceneContainer::EntitySceneContainer() :
