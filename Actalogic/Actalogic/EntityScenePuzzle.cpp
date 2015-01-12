@@ -318,53 +318,185 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 		case ActalogicCellType::WIRE_UP:
 		{
 			int linkToUp = pCell->GetDistanceToLink(ActalogicCellDirection::UP);
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 28.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
-			if (linkToUp > 0)
+			for (int i = 1; i <= linkToUp; ++i)
 			{
-				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 30.0F - linkToUp*30.0F), m_pSolidBrush, 2.0F);
+				int prevValue = pCell->GetValue(i);
+				if (prevValue > 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+				}
+				else if (prevValue < 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+				}
+				else
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+				}
+				if (i == linkToUp)
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F - (i - 1)*30.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 30.0F - i*30.0F), m_pSolidBrush, 2.0F);
+				}
+				else
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F - (i - 1)*30.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F - i*30.0F), m_pSolidBrush, 2.0F);
+				}
 			}
 			break;
 		}
 		case ActalogicCellType::WIRE_DOWN:
 		{
 			int linkToDown = pCell->GetDistanceToLink(ActalogicCellDirection::DOWN);
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 2.0F), m_pSolidBrush, 2.0F);
-			if (linkToDown > 0)
+			for (int i = 1; i <= linkToDown; ++i)
 			{
-				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + linkToDown*30.0F), m_pSolidBrush, 2.0F);
+				int prevValue = pCell->GetValue(i);
+				if (prevValue > 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+				}
+				else if (prevValue < 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+				}
+				else
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+				}
+				if (i == linkToDown)
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F + (i - 1)*30.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + i*30.0F), m_pSolidBrush, 2.0F);
+				}
+				else
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F + (i - 1)*30.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F + i*30.0F), m_pSolidBrush, 2.0F);
+				}
 			}
 			break;
 		}
 		case ActalogicCellType::WIRE_RIGHT:
 		{
 			int linkToRight = pCell->GetDistanceToLink(ActalogicCellDirection::RIGHT);
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 2.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
-			if (linkToRight > 0)
+			for (int i = 1; i <= linkToRight; ++i)
 			{
-				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + linkToRight*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+				int prevValue = pCell->GetValue(i);
+				if (prevValue > 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+				}
+				else if (prevValue < 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+				}
+				else
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+				}
+				if (i == linkToRight)
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F + (i - 1)*30.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + i*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+				}
+				else
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F + (i - 1)*30.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F + i*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+				}
 			}
+			//if (linkToRight > 0)
+			//{
+			//	pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + linkToRight*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+			//}
 			break;
 		}
 		case ActalogicCellType::WIRE_LEFT:
 		{
 			int linkToLeft = pCell->GetDistanceToLink(ActalogicCellDirection::LEFT);
-			m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			if (pCell->GetValue() > 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+			}
+			else if (pCell->GetValue() < 0)
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+			}
+			else
+			{
+				m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+			}
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 2.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 2.0F), m_pSolidBrush, 2.0F);
 			pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 28.0F, pt.y*30.0F + 28.0F), m_pSolidBrush, 2.0F);
-			if (linkToLeft > 0)
+			for (int i = 1; i <= linkToLeft; ++i)
 			{
-				pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 30.0F - linkToLeft*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+				int prevValue = pCell->GetValue(i);
+				if (prevValue > 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Orange));
+				}
+				else if (prevValue < 0)
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Blue));
+				}
+				else
+				{
+					m_pSolidBrush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGray));
+				}
+				if (i == linkToLeft)
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F - (i - 1)*30.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 30.0F - i*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+				}
+				else
+				{
+					pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F - (i - 1)*30.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F - i*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+				}
 			}
+			//if (linkToLeft > 0)
+			//{
+			//	pD2D1Manager->DrawLine(D2D1::Point2F(100.0F + pt.x * 30.0F + 15.0F, pt.y*30.0F + 15.0F), D2D1::Point2F(100.0F + pt.x * 30.0F + 30.0F - linkToLeft*30.0F, pt.y*30.0F + 15.0F), m_pSolidBrush, 2.0F);
+			//}
 			break;
 		}
 		default:
