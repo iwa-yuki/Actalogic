@@ -70,7 +70,7 @@ void EntityDebugInfoLayer::OnRender(D2D1Manager *pD2D1Manager)
 
 	if (m_theApp->m_entitySceneContainer.m_scene == EntityScene::PUZZLE)
 	{
-		ActalogicCell *pCell = (m_theApp->m_entitySceneContainer).m_entityPuzzle.GetCurrentCell();
+		EntityActalogicCell *pCell = (m_theApp->m_entitySceneContainer).m_entityPuzzle.GetCurrentCell();
 		if (pCell == nullptr)
 		{
 			nc = _stprintf_s(c, 1024, _T("\n\n\nCurrentCell = null"));

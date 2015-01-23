@@ -19,16 +19,16 @@ m_stackedCell(nullptr)
 {
 	for (int i = 0; i < 2; ++i)
 	{
-		m_cells.push_back(new ActalogicCell({ i, 0 }, ActalogicCellType::CELL_BUFFER, true));
-		m_cells.push_back(new ActalogicCell({ i, 1 }, ActalogicCellType::CELL_NAND, true));
-		m_cells.push_back(new ActalogicCell({ i, 2 }, ActalogicCellType::CELL_NOR, true));
-		m_cells.push_back(new ActalogicCell({ i, 3 }, ActalogicCellType::CELL_INPUT, true));
-		m_cells.push_back(new ActalogicCell({ i, 4 }, ActalogicCellType::CELL_OUTPUT, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 0 }, ActalogicCellType::CELL_BUFFER, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 1 }, ActalogicCellType::CELL_NAND, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 2 }, ActalogicCellType::CELL_NOR, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 3 }, ActalogicCellType::CELL_INPUT, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 4 }, ActalogicCellType::CELL_OUTPUT, true));
 
-		m_cells.push_back(new ActalogicCell({ i, 5 }, ActalogicCellType::WIRE_UP, true));
-		m_cells.push_back(new ActalogicCell({ i, 6 }, ActalogicCellType::WIRE_DOWN, true));
-		m_cells.push_back(new ActalogicCell({ i, 7 }, ActalogicCellType::WIRE_RIGHT, true));
-		m_cells.push_back(new ActalogicCell({ i, 8 }, ActalogicCellType::WIRE_LEFT, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 5 }, ActalogicCellType::WIRE_UP, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 6 }, ActalogicCellType::WIRE_DOWN, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 7 }, ActalogicCellType::WIRE_RIGHT, true));
+		m_cells.push_back(new EntityActalogicCell({ i, 8 }, ActalogicCellType::WIRE_LEFT, true));
 	}
 }
 
@@ -38,7 +38,7 @@ EntityScenePuzzle::~EntityScenePuzzle()
 	assert(!m_pBitmapBackground);
 	assert(!m_pSolidBrush);
 
-	for (ActalogicCell* pCell : m_cells)
+	for (EntityActalogicCell* pCell : m_cells)
 	{
 		delete pCell;
 	}
@@ -132,7 +132,7 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 		if (m_keyInputCounter == 0)
 		{
 			// カーソル位置にセルがあるか検索
-			ActalogicCell *pTmpCell = GetCurrentCell();
+			EntityActalogicCell *pTmpCell = GetCurrentCell();
 
 			// 移動可能なセルの場合、カーソル位置のセルを削除
 			if (pTmpCell != nullptr && pTmpCell->IsRemovable())
@@ -170,9 +170,13 @@ void EntityScenePuzzle::OnPreRender(InputHelper *pInputHelper)
 	}
 
 	// セルの前処理
-	for (ActalogicCell* pCell : m_cells)
+	for (EntityActalogicCell* pCell : m_cells)
 	{
 		pCell->OnPreRender(pInputHelper);
+	}
+	if (m_stackedCell != nullptr)
+	{
+		m_stackedCell->OnPreRender(pInputHelper);
 	}
 }
 
@@ -195,7 +199,7 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 	}
 
 	// セル・リンクを描画
-	for (ActalogicCell* pCell : m_cells)
+	for (EntityActalogicCell* pCell : m_cells)
 	{
 		POINT pt = pCell->GetPosition();
 		if (!pCell->IsRemovable())
@@ -516,16 +520,20 @@ void EntityScenePuzzle::OnRender(D2D1Manager *pD2D1Manager)
 void EntityScenePuzzle::OnPostRender()
 {
 	// セルの後処理
-	for (ActalogicCell* pCell : m_cells)
+	for (EntityActalogicCell* pCell : m_cells)
 	{
 		pCell->OnPostRender();
 	}
+	if (m_stackedCell != nullptr)
+	{
+		m_stackedCell->OnPostRender();
+	}
 }
 
-ActalogicCell* EntityScenePuzzle::GetCurrentCell()
+EntityActalogicCell* EntityScenePuzzle::GetCurrentCell()
 {
-	ActalogicCell *pTmpCell = nullptr;
-	for (ActalogicCell *pCell : m_cells)
+	EntityActalogicCell *pTmpCell = nullptr;
+	for (EntityActalogicCell *pCell : m_cells)
 	{
 		POINT pt = pCell->GetPosition();
 		if (pt.x == m_currentCursor.x && pt.y == m_currentCursor.y)
@@ -543,13 +551,13 @@ ActalogicCell* EntityScenePuzzle::GetCurrentCell()
 void EntityScenePuzzle::UpdateCellState()
 {
 	// カーソル位置および十字方向にもっとも近いセルを検索
-	ActalogicCell *pCurrentCell = nullptr;
-	ActalogicCell *pRightCell = nullptr;
-	ActalogicCell *pLeftCell = nullptr;
-	ActalogicCell *pUpCell = nullptr;
-	ActalogicCell *pDownCell = nullptr;
+	EntityActalogicCell *pCurrentCell = nullptr;
+	EntityActalogicCell *pRightCell = nullptr;
+	EntityActalogicCell *pLeftCell = nullptr;
+	EntityActalogicCell *pUpCell = nullptr;
+	EntityActalogicCell *pDownCell = nullptr;
 	{
-		for (ActalogicCell *pCell : m_cells)
+		for (EntityActalogicCell *pCell : m_cells)
 		{
 			POINT pt = pCell->GetPosition();
 			if (pt.x == m_currentCursor.x)
@@ -753,7 +761,7 @@ void EntityScenePuzzle::UpdateCellState()
 	}
 }
 
-bool EntityScenePuzzle::CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2)
+bool EntityScenePuzzle::CanLink(EntityActalogicCell *pCell1, EntityActalogicCell *pCell2)
 {
 	if (pCell1 == nullptr || pCell2 == nullptr)
 	{

@@ -23,14 +23,14 @@ enum ActalogicCellDirection : int
 	UP = 3,
 };
 
-class ActalogicCell : Entity
+class EntityActalogicCell : Entity
 {
 public:
-	ActalogicCell();
-	ActalogicCell(const POINT &pt,
+	EntityActalogicCell();
+	EntityActalogicCell(const POINT &pt,
 		ActalogicCellType type = ActalogicCellType::CELL_BUFFER,
 		bool removable = false);
-	virtual ~ActalogicCell();
+	virtual ~EntityActalogicCell();
 
 	void OnPreRender(InputHelper *pInputHelper);
 	void OnPostRender();
@@ -38,7 +38,7 @@ public:
 	ActalogicCellType GetType();
 	POINT GetPosition();
 	void SetPosition(const POINT &pt);
-	void SetLink(ActalogicCellDirection dir, ActalogicCell *pCell);
+	void SetLink(ActalogicCellDirection dir, EntityActalogicCell *pCell);
 	void ClearLink(ActalogicCellDirection dir);
 	int GetDistanceToLink(ActalogicCellDirection dir);
 	bool IsRemovable();
@@ -55,6 +55,6 @@ private:
 
 	int m_count;
 
-	ActalogicCell* m_pLinkedCells[4];
+	EntityActalogicCell* m_pLinkedCells[4];
 };
 

@@ -22,7 +22,7 @@ public:
 	void OnRender(D2D1Manager *pD2D1Manager);
 	void OnPostRender();
 
-	ActalogicCell* GetCurrentCell();
+	EntityActalogicCell* GetCurrentCell();
 
 private:
 	EntitySceneContainer *m_pContainer;
@@ -31,11 +31,11 @@ private:
 	POINT m_currentCursor;
 	int m_keyInputCounter;
 
-	std::list<ActalogicCell*> m_cells;
-	ActalogicCell* m_stackedCell;
+	std::list<EntityActalogicCell*> m_cells;
+	EntityActalogicCell* m_stackedCell;
 
 private:
 	void UpdateCellState();
-	bool CanLink(ActalogicCell *pCell1, ActalogicCell *pCell2);
+	bool CanLink(EntityActalogicCell *pCell1, EntityActalogicCell *pCell2);
 };
 

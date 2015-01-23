@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "EntityActalogicCell.h"
 
-ActalogicCell::ActalogicCell() : 
-ActalogicCell({ 0, 0 })
+EntityActalogicCell::EntityActalogicCell() :
+EntityActalogicCell({ 0, 0 })
 {
 }
 
-ActalogicCell::ActalogicCell(const POINT &pt,
+EntityActalogicCell::EntityActalogicCell(const POINT &pt,
 	ActalogicCellType type, bool removable) :
 m_type(type),
 m_position(pt),
@@ -21,11 +21,11 @@ m_count(0)
 	m_prevValue.assign(16, 0);
 }
 
-ActalogicCell::~ActalogicCell()
+EntityActalogicCell::~EntityActalogicCell()
 {
 }
 
-void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
+void EntityActalogicCell::OnPreRender(InputHelper *pInputHelper)
 {
 	switch (m_type)
 	{
@@ -213,7 +213,7 @@ void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
 	++m_count;
 }
 
-void ActalogicCell::OnPostRender()
+void EntityActalogicCell::OnPostRender()
 {
 	m_prevValue.push_front(m_currentValue);
 	while (m_prevValue.size() > 16)
@@ -224,22 +224,22 @@ void ActalogicCell::OnPostRender()
 }
 
 
-ActalogicCellType ActalogicCell::GetType()
+ActalogicCellType EntityActalogicCell::GetType()
 {
 	return m_type;
 }
 
-POINT ActalogicCell::GetPosition()
+POINT EntityActalogicCell::GetPosition()
 {
 	return m_position;
 }
 
-void ActalogicCell::SetPosition(const POINT &pt)
+void EntityActalogicCell::SetPosition(const POINT &pt)
 {
 	m_position = pt;
 }
 
-void ActalogicCell::SetLink(ActalogicCellDirection dir, ActalogicCell *pCell)
+void EntityActalogicCell::SetLink(ActalogicCellDirection dir, EntityActalogicCell *pCell)
 {
 	if (pCell == nullptr)
 	{
@@ -271,12 +271,12 @@ void ActalogicCell::SetLink(ActalogicCellDirection dir, ActalogicCell *pCell)
 	}
 }
 
-void ActalogicCell::ClearLink(ActalogicCellDirection dir)
+void EntityActalogicCell::ClearLink(ActalogicCellDirection dir)
 {
 	m_pLinkedCells[dir] = nullptr;
 }
 
-int ActalogicCell::GetDistanceToLink(ActalogicCellDirection dir)
+int EntityActalogicCell::GetDistanceToLink(ActalogicCellDirection dir)
 {
 	if (m_pLinkedCells[dir] == nullptr)
 	{
@@ -305,12 +305,12 @@ int ActalogicCell::GetDistanceToLink(ActalogicCellDirection dir)
 	return 0;
 }
 
-bool ActalogicCell::IsRemovable()
+bool EntityActalogicCell::IsRemovable()
 {
 	return m_isRemovable;
 }
 
-int ActalogicCell::GetValue(int index)
+int EntityActalogicCell::GetValue(int index)
 {
 	if (index == 0)
 	{
