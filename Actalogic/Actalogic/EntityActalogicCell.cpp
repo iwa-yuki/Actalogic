@@ -191,20 +191,12 @@ void EntityActalogicCell::OnPreRender(InputHelper *pInputHelper)
 	case CELL_OUTPUT:
 		break;
 	case WIRE_UP:
-		m_postValue = m_pLinkedCells[ActalogicCellDirection::DOWN] == nullptr ? 0 :
-			m_pLinkedCells[ActalogicCellDirection::DOWN]->GetValue();
 		break;
 	case WIRE_DOWN:
-		m_postValue = m_pLinkedCells[ActalogicCellDirection::UP] == nullptr ? 0 :
-			m_pLinkedCells[ActalogicCellDirection::UP]->GetValue();
 		break;
 	case WIRE_RIGHT:
-		m_postValue = m_pLinkedCells[ActalogicCellDirection::LEFT] == nullptr ? 0 :
-			m_pLinkedCells[ActalogicCellDirection::LEFT]->GetValue();
 		break;
 	case WIRE_LEFT:
-		m_postValue = m_pLinkedCells[ActalogicCellDirection::RIGHT] == nullptr ? 0 :
-			m_pLinkedCells[ActalogicCellDirection::RIGHT]->GetValue();
 		break;
 	default:
 		assert(false);

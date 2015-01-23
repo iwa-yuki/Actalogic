@@ -78,6 +78,10 @@
     <ClCompile Include="EntitySceneCreative.cpp" />
     <ClCompile Include="EntitySceneMenu.cpp" />
     <ClCompile Include="EntityScenePuzzle.cpp" />
+    <ClCompile Include="EntityWireDown.cpp" />
+    <ClCompile Include="EntityWireLeft.cpp" />
+    <ClCompile Include="EntityWireRight.cpp" />
+    <ClCompile Include="EntityWireUp.cpp" />
     <ClCompile Include="InputHelper.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -93,6 +97,10 @@
     <ClInclude Include="EntitySceneCreative.h" />
     <ClInclude Include="EntitySceneMenu.h" />
     <ClInclude Include="EntityScenePuzzle.h" />
+    <ClInclude Include="EntityWireDown.h" />
+    <ClInclude Include="EntityWireLeft.h" />
+    <ClInclude Include="EntityWireRight.h" />
+    <ClInclude Include="EntityWireUp.h" />
     <ClInclude Include="InputHelper.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

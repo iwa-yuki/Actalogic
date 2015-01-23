@@ -2,6 +2,10 @@
 #include "EntityScenePuzzle.h"
 #include "EntitySceneContainer.h"
 #include "EntityActalogicCell.h"
+#include "EntityWireDown.h"
+#include "EntityWireLeft.h"
+#include "EntityWireRight.h"
+#include "EntityWireUp.h"
 
 EntityScenePuzzle::EntityScenePuzzle() :
 EntityScenePuzzle(nullptr)
@@ -25,10 +29,10 @@ m_stackedCell(nullptr)
 		m_cells.push_back(new EntityActalogicCell({ i, 3 }, ActalogicCellType::CELL_INPUT, true));
 		m_cells.push_back(new EntityActalogicCell({ i, 4 }, ActalogicCellType::CELL_OUTPUT, true));
 
-		m_cells.push_back(new EntityActalogicCell({ i, 5 }, ActalogicCellType::WIRE_UP, true));
-		m_cells.push_back(new EntityActalogicCell({ i, 6 }, ActalogicCellType::WIRE_DOWN, true));
-		m_cells.push_back(new EntityActalogicCell({ i, 7 }, ActalogicCellType::WIRE_RIGHT, true));
-		m_cells.push_back(new EntityActalogicCell({ i, 8 }, ActalogicCellType::WIRE_LEFT, true));
+		m_cells.push_back(new EntityWireUp({ i, 5 }, true));
+		m_cells.push_back(new EntityWireDown({ i, 6 }, true));
+		m_cells.push_back(new EntityWireRight({ i, 7 }, true));
+		m_cells.push_back(new EntityWireLeft({ i, 8 }, true));
 	}
 }
 

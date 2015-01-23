@@ -10,24 +10,24 @@ public:
 	virtual ~Entity();
 
 	// デバイス非依存リソースの初期化
-	HRESULT OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager);
+	virtual HRESULT OnCreateDeviceIndependentResources(D2D1Manager *pD2D1Manager);
 
 	// デバイス依存リロースの初期化
-	HRESULT OnCreateDeviceResources(D2D1Manager *pD2D1Manager);
+	virtual HRESULT OnCreateDeviceResources(D2D1Manager *pD2D1Manager);
 
 	// デバイス依存リソースの開放
-	void OnDiscardDeviceResources();
+	virtual void OnDiscardDeviceResources();
 
 	// すべてのリソースの開放
-	void OnDiscardAllResources();
+	virtual void OnDiscardAllResources();
 
 
 	// レンダリング前処理
-	void OnPreRender(InputHelper *pInputHelper);
+	virtual void OnPreRender(InputHelper *pInputHelper);
 
 	// レンダリング処理
-	void OnRender(D2D1Manager *pD2D1Manager);
+	virtual void OnRender(D2D1Manager *pD2D1Manager);
 
 	// レンダリング後処理
-	void OnPostRender();
+	virtual void OnPostRender();
 };

@@ -32,8 +32,8 @@ public:
 		bool removable = false);
 	virtual ~EntityActalogicCell();
 
-	void OnPreRender(InputHelper *pInputHelper);
-	void OnPostRender();
+	virtual void OnPreRender(InputHelper *pInputHelper);
+	virtual void OnPostRender();
 
 	ActalogicCellType GetType();
 	POINT GetPosition();
@@ -44,7 +44,7 @@ public:
 	bool IsRemovable();
 	int GetValue(int index = 0);
 
-private:
+protected:
 	ActalogicCellType m_type;
 	POINT m_position;
 	bool m_isRemovable;
