@@ -17,16 +17,19 @@ m_keyInputCounter(1),
 m_cells(),
 m_stackedCell(nullptr)
 {
-	m_cells.push_back(new ActalogicCell({ 0, 0 }, ActalogicCellType::CELL_BUFFER, true));
-	m_cells.push_back(new ActalogicCell({ 0, 1 }, ActalogicCellType::CELL_NAND, true));
-	m_cells.push_back(new ActalogicCell({ 0, 2 }, ActalogicCellType::CELL_NOR, true));
-	m_cells.push_back(new ActalogicCell({ 0, 3 }, ActalogicCellType::CELL_INPUT, true));
-	m_cells.push_back(new ActalogicCell({ 0, 4 }, ActalogicCellType::CELL_OUTPUT, true));
+	for (int i = 0; i < 2; ++i)
+	{
+		m_cells.push_back(new ActalogicCell({ i, 0 }, ActalogicCellType::CELL_BUFFER, true));
+		m_cells.push_back(new ActalogicCell({ i, 1 }, ActalogicCellType::CELL_NAND, true));
+		m_cells.push_back(new ActalogicCell({ i, 2 }, ActalogicCellType::CELL_NOR, true));
+		m_cells.push_back(new ActalogicCell({ i, 3 }, ActalogicCellType::CELL_INPUT, true));
+		m_cells.push_back(new ActalogicCell({ i, 4 }, ActalogicCellType::CELL_OUTPUT, true));
 
-	m_cells.push_back(new ActalogicCell({ 0, 5 }, ActalogicCellType::WIRE_UP, true));
-	m_cells.push_back(new ActalogicCell({ 1, 5 }, ActalogicCellType::WIRE_DOWN, true));
-	m_cells.push_back(new ActalogicCell({ 2, 5 }, ActalogicCellType::WIRE_RIGHT, true));
-	m_cells.push_back(new ActalogicCell({ 3, 5 }, ActalogicCellType::WIRE_LEFT, true));
+		m_cells.push_back(new ActalogicCell({ i, 5 }, ActalogicCellType::WIRE_UP, true));
+		m_cells.push_back(new ActalogicCell({ i, 6 }, ActalogicCellType::WIRE_DOWN, true));
+		m_cells.push_back(new ActalogicCell({ i, 7 }, ActalogicCellType::WIRE_RIGHT, true));
+		m_cells.push_back(new ActalogicCell({ i, 8 }, ActalogicCellType::WIRE_LEFT, true));
+	}
 }
 
 

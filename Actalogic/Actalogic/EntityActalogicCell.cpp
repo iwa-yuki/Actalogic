@@ -82,9 +82,109 @@ void ActalogicCell::OnPreRender(InputHelper *pInputHelper)
 		break;
 	}
 	case CELL_NOR:
+	{
+		int val = 0;
+		int pos = 0;
+		int neg = 0;
+		if (m_pLinkedCells[ActalogicCellDirection::DOWN] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::DOWN]->GetType() == ActalogicCellType::WIRE_UP)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::DOWN]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::DOWN));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+		if (m_pLinkedCells[ActalogicCellDirection::UP] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::UP]->GetType() == ActalogicCellType::WIRE_DOWN)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::UP]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::UP));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+		if (m_pLinkedCells[ActalogicCellDirection::RIGHT] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::RIGHT]->GetType() == ActalogicCellType::WIRE_LEFT)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::RIGHT]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::RIGHT));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+		if (m_pLinkedCells[ActalogicCellDirection::LEFT] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::LEFT]->GetType() == ActalogicCellType::WIRE_RIGHT)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::LEFT]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::LEFT));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+
+		if (pos == 0 && neg > 0)
+		{
+			m_postValue = 1;
+		}
+		else if (pos == 0 && neg == 0)
+		{
+			m_postValue = 0;
+		}
+		else
+		{
+			m_postValue = -1;
+		}
 		break;
+	}
 	case CELL_NAND:
+	{
+		int val = 0;
+		int pos = 0;
+		int neg = 0;
+		if (m_pLinkedCells[ActalogicCellDirection::DOWN] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::DOWN]->GetType() == ActalogicCellType::WIRE_UP)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::DOWN]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::DOWN));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+		if (m_pLinkedCells[ActalogicCellDirection::UP] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::UP]->GetType() == ActalogicCellType::WIRE_DOWN)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::UP]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::UP));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+		if (m_pLinkedCells[ActalogicCellDirection::RIGHT] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::RIGHT]->GetType() == ActalogicCellType::WIRE_LEFT)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::RIGHT]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::RIGHT));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+		if (m_pLinkedCells[ActalogicCellDirection::LEFT] != nullptr
+			&& m_pLinkedCells[ActalogicCellDirection::LEFT]->GetType() == ActalogicCellType::WIRE_RIGHT)
+		{
+			val = m_pLinkedCells[ActalogicCellDirection::LEFT]->GetValue(
+				GetDistanceToLink(ActalogicCellDirection::LEFT));
+			if (val > 0){ ++pos; }
+			else if (val < 0){ ++neg; }
+		}
+
+		if (pos > 0 && neg == 0)
+		{
+			m_postValue = -1;
+		}
+		else if (pos == 0 && neg == 0)
+		{
+			m_postValue = 0;
+		}
+		else
+		{
+			m_postValue = 1;
+		}
 		break;
+	}
 	case CELL_INPUT:
 		m_postValue = (m_count / 60) % 2 == 1 ? 1 : -1;
 		break;
